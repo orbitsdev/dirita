@@ -15,4 +15,7 @@ class Asset {
   static String lottiePath(String image) {
     return 'assets/images/lottie/$image';
   }
+  static String imagePath(String image) {
+    return 'assets/images/$image';
+  }
 }

@@ -1,3 +1,5 @@
+import 'package:dirita_tourist_spot_app/pages/public/views/home_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/tourist_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pages/auth/views/account_selection_screen.dart';
 import 'pages/onboarding/views/boarding_screen.dart';
-import 'pages/public/home_screen.dart';
+
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +30,8 @@ class _DiritaAppState extends State<DiritaApp> {
 
 
   Widget authscreenlogic(){
+
+    // return AccountSelectionScreen();
     return HomeScreen();
       // if(widget.showOnBoarding  ==  false){
       //     return  const BoardingScreen();
@@ -42,28 +46,7 @@ class _DiritaAppState extends State<DiritaApp> {
       theme: ThemeData(
         colorSchemeSeed: AppTheme.ORANGE,
         useMaterial3: true,
-        textTheme: TextTheme(
-          displayLarge: GoogleFonts.openSans(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-          displayMedium: GoogleFonts.openSans(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-          displaySmall: GoogleFonts.openSans(
-            fontSize: 16,
-
-          ),
-          bodyLarge: GoogleFonts.openSans(
-            fontSize: 14,
-            fontWeight: FontWeight.normal,
-          ),
-          bodyMedium: GoogleFonts.openSans(
-            fontSize: 12,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
+        textTheme: AppTheme.CUSTOM_TEXT_THEME,
       ),
       debugShowCheckedModeBanner: false,
       home: authscreenlogic(),
@@ -71,6 +54,7 @@ class _DiritaAppState extends State<DiritaApp> {
         GetPage(name: '/boarding', page: () => const BoardingScreen()),
         GetPage(name: '/home', page: () => HomeScreen()),
         GetPage(name: '/select-account-type', page: () => AccountSelectionScreen()),
+        GetPage(name: '/spot-details', page: () => TouristDetailsScreen()),
       ],
     );
   }

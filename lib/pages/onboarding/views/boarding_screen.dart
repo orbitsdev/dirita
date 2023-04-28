@@ -1,7 +1,6 @@
 
 
 
-import 'package:dirita_tourist_spot_app/pages/public/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -12,6 +11,7 @@ import '../../../data/onboarding_data.dart';
 import '../../../utils/app_theme.dart';
 import '../../../widgets/boarding_screen_widget.dart';
 import '../../../widgets/v_space.dart';
+import '../../public/views/home_screen.dart';
 
 class BoardingScreen extends StatefulWidget {
   const BoardingScreen({ Key? key }) : super(key: key);
@@ -112,7 +112,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
                 ),
               ),
                VSpace(MediaQuery.of(context).size.height * 0.05),
-                SizedBox( width:double.infinity,height:60,child: ElevatedButton(onPressed: next, child: Text( isLastIndex ? 'Get Started'.toUpperCase() :'NEXT'.toUpperCase(), style:  const TextStyle(fontSize: 20,fontWeight: FontWeight.bold, ),)
+                SizedBox( width:double.infinity,height:60,child: ElevatedButton(onPressed: next, child: Text( isLastIndex ? 'Get Started'.toUpperCase() :'NEXT'.toUpperCase(), style:  const TextStyle(fontSize: 20,fontWeight: FontWeight.bold,  color: AppTheme.ORANGE),)
                 )
                 ).animate().fadeIn(),
               ],

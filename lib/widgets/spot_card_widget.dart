@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dirita_tourist_spot_app/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'dart:math';
 import '../utils/app_theme.dart';
 import '../utils/asset.dart';
@@ -9,16 +11,11 @@ import 'package:shimmer/shimmer.dart';
 class SpotCardWidget extends StatelessWidget {
   const SpotCardWidget({Key? key}) : super(key: key);
 
-  String randomUber() {
-    int n = 1 + Random().nextInt(100);
-
-    return n.toString();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+     
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
       ),
@@ -66,12 +63,12 @@ class SpotCardWidget extends StatelessWidget {
             ),
           )),
           Positioned(
-            top:8,
+            top:20,
             right: 10,
             left: 0,
             child: Container(
             padding: const EdgeInsets.all(10) ,
-            child: Text('Isla Delena Resort And Restaurant'  , style: TextStyle(height: 0, fontSize: 22, color: Colors.white),),
+            child: Text('Balot Island Hey Yow'  , style: TextStyle(height: 0, fontSize: 22, color: Colors.white),),
           )),
           Positioned(
             top: 0,
@@ -87,7 +84,7 @@ class SpotCardWidget extends StatelessWidget {
               ),
               child: Center(
                   child: Text('4.9',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 12))),
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.amber[200], fontSize: 12))),
             ),
           ),
         ],
