@@ -25,6 +25,7 @@ class AppTheme {
   static const Color FONT = Color(0xff080808) ;
 
 
+  static const Color RED = Color(0xffC62828) ;
   static const Color CARD1 = Color(0xffFFE8C3) ;
   static const Color CARD2 = Color(0xffEEECF4) ;
   static const Color CARD3 = Color(0xffFAC6DF) ;

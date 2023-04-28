@@ -1,5 +1,5 @@
 import 'package:dirita_tourist_spot_app/delegates/sticky_header_delegate.dart';
-import 'package:dirita_tourist_spot_app/pages/public/views/tourist_details_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/sv_space.dart';
@@ -55,8 +55,8 @@ class _TouristScreenState extends State<TouristScreen> {
         maxHeight: 70,
         child: Container(
         color: AppTheme.BACKGROUND,
-        padding: EdgeInsets.all(16),
-          child: Text(
+        padding: const EdgeInsets.all(16),
+          child: const Text(
             'Tourist Spots',
             style: TextStyle(
               fontSize: 22,
@@ -73,9 +73,9 @@ class _TouristScreenState extends State<TouristScreen> {
             children: List.generate(
               30,
               (index) => GestureDetector(
-                onTap: () => Get.to(() => TouristDetailsScreen(),
+                onTap: () => Get.to(() => const TouristSpotDetails(),
                     transition: Transition.cupertino),
-                child: SizedBox(
+                child: const SizedBox(
                   height: 300,
                   child: SpotCardWidget(),
                 ),

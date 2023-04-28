@@ -3,7 +3,12 @@
 
 
 
+import 'package:dirita_tourist_spot_app/pages/auth/views/signup_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/home_screen.dart';
+import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
+import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../utils/app_theme.dart';
 import '../../../widgets/account_card_widget.dart';
@@ -22,108 +27,56 @@ const AccountSelectionScreen({ Key? key }) : super(key: key);
   @override
   Widget build(BuildContext context){
     return Scaffold(
+    
       appBar: AppBar(
-        title: const Text('Select Account Type'),
-       
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        actions: [
+
+          IconButton(onPressed: (){
+            Get.to(()=> HomeScreen());
+          }, icon: Icon(Icons.home_rounded, color: AppTheme.ORANGE, size: 34,)),
+
+          HSpace(8),
+        ],
       ),
      
       body:
       ListView(
-        padding: EdgeInsets.symmetric(horizontal: 8,),
+        
+        padding: const EdgeInsets.symmetric(horizontal: 16,),
         physics: const BouncingScrollPhysics(),
         children: [   
+              const VSpace(10),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text('What are you? ', style: TextStyle(fontSize: 32),),
+            ),
+                    const VSpace(5),
+            GestureDetector(
+               onTap: (){
+                Get.to(()=> SignupScreen(name: 'tourist',));
+              },
+              child: AccountCardWidget(
+                color: Color.fromARGB(255, 114, 137, 241),
+                name: 'A Tourist',
+                image: 'drone-pilot-lottie.json',
+                description: 'Someone who goes on trips to discover new places and have fun.',
+              ),
+            ),
 
+            const VSpace(24),
+           
+            GestureDetector(
+              onTap: (){
+                Get.to(()=> SignupScreen(name: 'tourist-spot-manager',));
+              },
+              child: AccountCardWidget(
+                color: AppTheme.CARD8,
+                name: 'A Tourist Spot Manager',
+                image: 'admin.json',
+                description: 'The person who takes care of all the details related to a tourist attraction, such as making sure it is clean, safe, and advertised so that visitors will come and enjoy it.',
+              ),
+            ),
             
-            AccountCardWidget(
-               color: AppTheme.CARD8,
-              name: 'Tourist',
-              image: 'drone-pilot-lottie.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD3,
-              name: 'Tourist Spot Manager',
-              image: 'administracao.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD3,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD4,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD5,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD6,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD7,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD8,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD9,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD10,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD11,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD12,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD13,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD14,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD15,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD16,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
-            AccountCardWidget(
-              color: AppTheme.CARD17,
-              name: 'Dirikita Admin',
-              image: 'admin.json',
-            ),
           
         
         ],

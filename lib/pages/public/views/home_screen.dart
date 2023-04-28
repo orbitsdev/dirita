@@ -1,4 +1,4 @@
-import 'package:dirita_tourist_spot_app/pages/public/views/tourist_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/constant.dart';
 import 'package:dirita_tourist_spot_app/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import '../../../utils/modal.dart';
 import '../../../widgets/h_space.dart';
 
 import '../../../widgets/spot_card_widget.dart';
-import 'tourist_details_screen.dart';
+import 'tourist_spot_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
