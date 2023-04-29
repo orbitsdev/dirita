@@ -116,11 +116,11 @@ class AppTheme {
 
 static  TextTheme CUSTOM_TEXT_THEME = TextTheme(
          
-      headline1: TextStyle(color: AppTheme.FONT, fontFamily: 'BraahOne-Regular', fontSize: 24),
-      headline2: TextStyle(color: AppTheme.FONT, fontFamily: 'BraahOne-Regular', fontSize: 22),
-      headline3: TextStyle(color: AppTheme.FONT, fontFamily: 'BraahOne-Regular', fontSize: 20),
-      bodyText1: TextStyle(color: AppTheme.FONT, fontFamily: 'BraahOne-Regular', fontSize: 16),
-      bodyText2: TextStyle(color: AppTheme.FONT, fontFamily: 'BraahOne-Regular', fontSize: 14),
+      headline1: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 24),
+      headline2: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 22),
+      headline3: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 20),
+      bodyText1: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 16),
+      bodyText2: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 14),
   
    );
 

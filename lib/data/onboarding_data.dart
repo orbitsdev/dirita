@@ -4,7 +4,9 @@
 
 
 
-import '../models/boarding.dart';
+
+
+import 'package:dirita_tourist_spot_app/models/boarding.dart';
 
 List<Boarding> boarding_data = [
   

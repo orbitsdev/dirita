@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "873547714022",
+    "project_id": "dirikita-51ec9",
+    "storage_bucket": "dirikita-51ec9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873547714022:android:1144a5a149616ddd249a27",
+        "android_client_info": {
+          "package_name": "com.orbino.dirikita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873547714022-22v68t5khf64t7ukfr4bu8cs3jbcvuft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgkPEBuejMENR0WOAJy-2kjkhaCuWhanQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873547714022-22v68t5khf64t7ukfr4bu8cs3jbcvuft.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

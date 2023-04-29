@@ -21,6 +21,7 @@ class Modal {
           child: Container(
          constraints: BoxConstraints(
           minHeight:   MediaQuery.of(context).size.height * 0.55,
+        
          ),
            child: const LoginScreenWidget(),
               ),
@@ -29,7 +30,7 @@ class Modal {
 
 
 
- static void showProgressDialog({required BuildContext context , String message = 'Loading...'}) {
+ static void showProgressDialog({required BuildContext context , String message = 'Loading'}) {
   showDialog(
     context: context,
     barrierDismissible: true,
@@ -50,14 +51,58 @@ class Modal {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
-                message,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.FONT,
+              Container(
+                child: Text(
+                  message,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.FONT,
+                  ),
                 ),
               ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+
+ static void showMediumProgressDialog({required BuildContext context , String message = 'Loading', bool dismissible  = true}) {
+  showDialog(
+    context: context,
+    barrierDismissible: dismissible,
+    builder: (BuildContext context) {
+      return Center(
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  AppTheme.ORANGE,
+                ),
+              ),
+              // const SizedBox(height: 20),
+              // Container(
+              //   child: Text(
+              //     message,
+              //     style: const TextStyle(
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.bold,
+              //       color: AppTheme.FONT,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
