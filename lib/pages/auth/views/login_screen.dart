@@ -1,3 +1,4 @@
+import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/account_selection_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/signup_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
@@ -15,7 +16,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
+  
+    final authcontroller = Get.find<AuthController>();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -47,8 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Validate the form
     if (_key.currentState!.validate()) {
-      // Submit the form
-      // ...
+        authcontroller.loginWithEmailAndPassword(context: context, email: _emailController.text.trim(), password: _passwordController.text.trim());
     }
   }
 
@@ -119,19 +120,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const VSpace(24),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.ORANGE,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () => _login(context),
-                      child: const Center(
-                        child: Text(
-                          'Login',
-                          style: TextStyle(fontSize: 16),
+                  GetBuilder<AuthController>(
+                    builder:(controller)=>  SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.ORANGE,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () => controller.isLoginLoading.value ? null :  _login(context),
+                        child:  Center(
+                          child: Text(
+                            'Login ${controller.isLoginLoading.value}',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
                       ),
                     ),

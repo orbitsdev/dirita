@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dirita_tourist_spot_app/utils/constant.dart';
+import 'package:dirita_tourist_spot_app/utils/asset.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenImage extends StatelessWidget {

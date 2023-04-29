@@ -111,14 +111,13 @@ class Modal {
   );
 }
 
-
-static void showErrorDialog({ required BuildContext context, String message = 'Error'}) {
+static void showErrorDialog({required BuildContext context, String message = 'Error'}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return Center(
         child: Container(
-            width: 300,
+          width: 300,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -134,11 +133,12 @@ static void showErrorDialog({ required BuildContext context, String message = 'E
               ),
               const SizedBox(height: 20),
               Text(
-                message,
+                'Error',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.FONT,
+                 
                 ),
               ),
               const SizedBox(height: 10),
@@ -147,6 +147,7 @@ static void showErrorDialog({ required BuildContext context, String message = 'E
                 style: const TextStyle(
                   fontSize: 16,
                   color: AppTheme.FONT,
+                  decoration: TextDecoration.none,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -166,6 +167,7 @@ static void showErrorDialog({ required BuildContext context, String message = 'E
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                   
                   ),
                 ),
               ),
@@ -176,5 +178,6 @@ static void showErrorDialog({ required BuildContext context, String message = 'E
     },
   );
 }
+
 
 }

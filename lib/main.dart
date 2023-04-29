@@ -1,3 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dirita_tourist_spot_app/binding/app_binding.dart';
+import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/views/admin_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/login_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/signup_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
@@ -5,6 +10,7 @@ import 'package:dirita_tourist_spot_app/pages/public/views/home_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_location.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +23,7 @@ import 'pages/onboarding/views/boarding_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  AppBindings().dependencies();
   final prefs = await SharedPreferences.getInstance();
   final showOnBoarding = prefs.getBool('showOnBoarding') ?? false;
   runApp( DiritaApp(showOnBoarding:showOnBoarding ,));
@@ -32,22 +39,92 @@ class DiritaApp extends StatefulWidget {
 }
 
 class _DiritaAppState extends State<DiritaApp> {
-
-
-  Widget authscreenlogic(){
-    return  TouristSpotDetails();
-    return HomeScreen();
-    return AccountSelectionScreen();
-      // if(widget.showOnBoarding  ==  false){
-      //     return  const BoardingScreen();
-      // }else{
-      //  return   HomeScreen();
-      // }
+  
+final authcontroller = Get.find<AuthController>();
+Widget authscreenlogic() {
+  if(widget.showOnBoarding == false) {
+    return const BoardingScreen();
+  } else {
+    return Scaffold(
+      body: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Return a loading indicator if the stream is still waiting for data
+            return Center(child: CircularProgressIndicator());
+          } else {
+            if (snapshot.hasData) {
+              // User is signed in
+              final user = snapshot.data;
+              final uid = user?.uid;
+              if (uid == null) {
+                return LoginScreen();
+              } else {
+                final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
+                return FutureBuilder<DocumentSnapshot>(
+                  future: userRef.get(),
+                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // Return a loading indicator if the future is still waiting for data
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      final userData = snapshot.data?.data() as Map<String, dynamic>?;
+                       authcontroller.getUserDetails(uid);
+                      final role = userData?['role'] as String?;
+                      if (role == 'tourist-spot-manager') {
+                        return AdminScreen();
+                      } else {
+                        return HomeScreen();
+                      }
+                    }
+                  },
+                );
+              }
+            } else {
+              // User is signed out
+              return LoginScreen();
+            }
+          }
+        },
+      ),
+    );
   }
+}
+
+  
+
+//   Widget authscreenlogic() {
+//   if(widget.showOnBoarding  ==  false){
+//     return const BoardingScreen();
+//   } else {
+//     return Scaffold(
+//       body: StreamBuilder(
+//         stream: FirebaseAuth.instance.authStateChanges(),
+//         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             // Return a loading indicator if the stream is still waiting for data
+//             return Center(child: CircularProgressIndicator());
+//           } else {
+//             if (snapshot.hasData) {
+//               // User is signed in
+//               return HomeScreen();
+//             } else {
+//               // User is signed out
+//               return LoginScreen();
+//             }
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
+
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      smartManagement: SmartManagement.full,
+      initialBinding: AppBindings() ,
       theme: ThemeData(
         colorSchemeSeed: AppTheme.ORANGE,
         useMaterial3: true,

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_location.dart';
-import 'package:dirita_tourist_spot_app/utils/constant.dart';
+import 'package:dirita_tourist_spot_app/utils/asset.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/sv_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';

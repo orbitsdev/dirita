@@ -1,3 +1,4 @@
+import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/account_selection_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/signup_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
@@ -16,8 +17,7 @@ class LoginScreenWidget extends StatefulWidget {
 }
 
 class _LoginScreenWidgetState extends State<LoginScreenWidget> {
-
-
+  final authcontroller = Get.find<AuthController>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -48,10 +48,11 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
 
     // Validate the form
     if (_key.currentState!.validate()) {
-      // Submit the form
-      // ...
 
-        Modal.showErrorDialog(context: context);
+
+  
+      authcontroller.loginWithEmailAndPassword(context: context, email: _emailController.text.trim(), password: _passwordController.text.trim());
+        
 
     }
   }
@@ -118,22 +119,26 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                   },
                 ),
                 const VSpace(24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.ORANGE,
-                      foregroundColor: Colors.white,
-                    ),
-                    onPressed: () => _login(context),
-                    child: const Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(fontSize: 16),
+                GetBuilder<AuthController>(
+                  builder: (controller){
+                   return SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.ORANGE,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () => controller.isLoginLoading.value ? null :  _login(context),
+                      child:  Center(
+                        child: Text(
+                          'Login ${controller.isLoginLoading.value.toString()}',
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                     ),
-                  ),
+                  );
+                  }
                 ),
                 const VSpace(20),
                 RichText(

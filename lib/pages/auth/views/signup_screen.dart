@@ -1,6 +1,7 @@
 
 
 
+import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,8 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+
+  final authcontroller = Get.find<AuthController>();
 
 // controllers
   final _firstNameController = TextEditingController();
@@ -65,8 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     // Validate the form
     if (_key.currentState!.validate()) {
-      // Submit the form
-      // ...
+          authcontroller.registerWithEmailAndPassword(context: context, email: _emailController.text.trim(), password: _passwordController.text.trim(), first_name: _firstNameController.text.trim(), last_name: _lastNameController.text.trim(), role: widget.name ?? 'tourist');
     }
   }
 
@@ -188,20 +190,27 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const VSpace(24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.ORANGE,
-                      foregroundColor: Colors.white,
-                    ),
-                    onPressed: () => _register(context),
-                    child: const Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(fontSize: 16),
-                      ),
+                GetBuilder<AuthController>(
+                  
+                  builder: (controller)=> SizedBox( 
+                    width: double.infinity,
+                    height: 50,
+                    child: Builder(
+                      builder: (context) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.ORANGE,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: () => controller.isRegisterLoading.value ?  null :_register(context),
+                          child: const Center(
+                            child: Text(
+                              'Signup',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        );
+                      }
                     ),
                   ),
                 ),

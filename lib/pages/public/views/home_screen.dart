@@ -1,5 +1,5 @@
+import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_screen.dart';
-import 'package:dirita_tourist_spot_app/utils/constant.dart';
 import 'package:dirita_tourist_spot_app/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -22,6 +22,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+    final authcontroller = Get.find<AuthController>();
+
   int _currentIndex = 0;
 
   List<Widget> _pages = [
@@ -40,28 +43,31 @@ void openDrawer(context){
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.BACKGROUND,
-      drawer: Drawer(
+        drawer: Drawer(
 
-        child: SafeArea(
-          child: ListView(
-            children: [
+          child: GetBuilder<AuthController>(
+            builder:(controller)=> SafeArea(
+              child: ListView(
+                children: [
+          
+                    Container(
+                      height: 150,
+                      color: AppTheme.ORANGE,
+                      padding: EdgeInsets.all(10),
+                      child: Text('YOW'.toUpperCase(),style: TextStyle(fontSize: 40, color: Colors.white),)
+                      ),
 
-                Container(
-                  height: 150,
-                  color: AppTheme.ORANGE,
-                  padding: EdgeInsets.all(10),
-                  child: Text('YOW'.toUpperCase(),style: TextStyle(fontSize: 40, color: Colors.white),)
-                  
-                  ),
-                HSpace(40),
-                ListTile(onTap: (){}, leading: Icon(Icons.add, color: AppTheme.FONT,), title: Text( 'Some Features', style: TextStyle(fontSize: 18, color: AppTheme.FONT),)),
-                ListTile(onTap: (){}, leading: Icon(Icons.add, color: AppTheme.FONT,), title: Text( 'Some Features', style: TextStyle(fontSize: 18, color: AppTheme.FONT),)),
-                ListTile(onTap: (){}, leading: Icon(Icons.add, color: AppTheme.FONT,), title: Text( 'Some Features', style: TextStyle(fontSize: 18, color: AppTheme.FONT),)),
-            ]
+                      Container(child: Text(controller.user.value.toString())),
+                    HSpace(40),
+                    if(controller.user.value.uid != null)ListTile( onTap: ()=>controller.logout(context), leading: Icon(Icons.logout, color: AppTheme.FONT,), title: Text( 'Logout', style: TextStyle(fontSize: 18, color: AppTheme.FONT),)),
+                    ListTile(onTap: (){}, leading: Icon(Icons.add, color: AppTheme.FONT,), title: Text( 'Some Features', style: TextStyle(fontSize: 18, color: AppTheme.FONT),)),
+                    ListTile(onTap: (){}, leading: Icon(Icons.add, color: AppTheme.FONT,), title: Text( 'Some Features', style: TextStyle(fontSize: 18, color: AppTheme.FONT),)),
+                ]
+              ),
+            ),
           ),
+          
         ),
-        
-      ),
       appBar: AppBar(
 
         
@@ -90,8 +96,7 @@ void openDrawer(context){
             }
           ),
 
-        // IconButton(onPressed: (){}, icon: ProfileWidget(url: sampleimage,),),
-          TextButton(
+         GetBuilder<AuthController>(builder: (controller)=> controller.user.value.uid == null ? TextButton(
             onPressed: () => Modal.showBottomSheet(context),
             child: Text(
               'Signin',
@@ -101,7 +106,8 @@ void openDrawer(context){
                     color: AppTheme.ORANGE,
                   ),
             ),
-          ),
+          ): IconButton(onPressed: ()=> Modal.showBottomSheet(context), icon: ProfileWidget(url: controller.user.value.profile_image,),)),
+          
           const HSpace(20),
         ],
       ),
