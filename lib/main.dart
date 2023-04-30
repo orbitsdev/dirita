@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/binding/app_binding.dart';
-import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/admin_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/views/select_tourist_location_map_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/login_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/signup_screen.dart';
@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'pages/admin/views/create_tourist_spot_screen.dart';
 import 'pages/auth/views/account_selection_screen.dart';
 import 'pages/onboarding/views/boarding_screen.dart';
 
@@ -42,6 +43,8 @@ class _DiritaAppState extends State<DiritaApp> {
   
 final authcontroller = Get.find<AuthController>();
 Widget authscreenlogic() {
+  return CreateTouristSpotScreen();
+
   if(widget.showOnBoarding == false) {
     return const BoardingScreen();
   } else {
@@ -51,7 +54,7 @@ Widget authscreenlogic() {
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Return a loading indicator if the stream is still waiting for data
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else {
             if (snapshot.hasData) {
               // User is signed in
@@ -91,33 +94,6 @@ Widget authscreenlogic() {
   }
 }
 
-  
-
-//   Widget authscreenlogic() {
-//   if(widget.showOnBoarding  ==  false){
-//     return const BoardingScreen();
-//   } else {
-//     return Scaffold(
-//       body: StreamBuilder(
-//         stream: FirebaseAuth.instance.authStateChanges(),
-//         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             // Return a loading indicator if the stream is still waiting for data
-//             return Center(child: CircularProgressIndicator());
-//           } else {
-//             if (snapshot.hasData) {
-//               // User is signed in
-//               return HomeScreen();
-//             } else {
-//               // User is signed out
-//               return LoginScreen();
-//             }
-//           }
-//         },
-//       ),
-//     );
-//   }
-// }
 
 
   @override
@@ -142,6 +118,9 @@ Widget authscreenlogic() {
         GetPage(name: '/register', page: () => SignupScreen(), transition: Transition.cupertino),
         GetPage(name: '/account-selection', page: () => AccountSelectionScreen(), transition: Transition.cupertino),
         GetPage(name: '/view-image', page: () => FullScreenImage(), transition: Transition.zoom),
+        GetPage(name: '/admin', page: () => AdminScreen(), transition: Transition.cupertino),
+        GetPage(name: '/admin/create-tourist-spot', page: () => CreateTouristSpotScreen(), transition: Transition.cupertino),
+        GetPage(name: '/admin/select-tourist-spot-location', page: () => SelectTouristLocationSpotScreen(), transition: Transition.cupertino),
       ],
     );
   }
