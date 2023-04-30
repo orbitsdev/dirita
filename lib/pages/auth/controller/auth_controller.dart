@@ -28,6 +28,7 @@ class AuthController extends GetxController {
     Modal.showErrorDialog(context: context, message: e.toString());
 
   }
+  
   void handleError(BuildContext context, e) {
     isRegisterLoading(false);
     update();

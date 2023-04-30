@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class AppBindings implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => AuthController());
-    Get.lazyPut(() => TouristSpotController());
+    Get.put(AuthController(), permanent: true);
+    Get.put(TouristSpotController(), permanent: true);
   }  
 }

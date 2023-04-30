@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dirita_tourist_spot_app/models/geo_model.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/select_tourist_location_map_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
@@ -21,11 +22,14 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
 
   late TextEditingController _nameController;
   late TextEditingController _shortNameController;
-  late TextEditingController _descriptionController;
+  late TextEditingController _aboutController;
+  late TextEditingController _moreController;
+  String? location;
 
   late FocusNode _nameFucusNode;
   late FocusNode _shortNameFucusNode;
-  late FocusNode _descriptionFucusNode;
+  late FocusNode _aboutFucusNode;
+  late FocusNode _moreFucusNode;
 
   final _key = GlobalKey<FormState>();
   final _focusScopeNode = FocusScopeNode();
@@ -40,26 +44,30 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
     super.initState();
 
     _nameController = TextEditingController();
-    _nameFucusNode = FocusNode();
-
     _shortNameController = TextEditingController();
+    _aboutController = TextEditingController();
+    _moreController = TextEditingController();
+   
+    _nameFucusNode = FocusNode();
     _shortNameFucusNode = FocusNode();
+    _aboutFucusNode = FocusNode();
+    _moreFucusNode = FocusNode();
 
-    _descriptionController = TextEditingController();
-    _descriptionFucusNode = FocusNode();
+    
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     _nameController.dispose();
-    _nameFucusNode.dispose();
-
     _shortNameController.dispose();
-    _shortNameFucusNode.dispose();
+    _aboutController.dispose();
+    _moreController.dispose();
 
-    _descriptionController.dispose();
-    _descriptionFucusNode.dispose();
+    _nameFucusNode.dispose();
+    _shortNameFucusNode.dispose();
+    _aboutFucusNode.dispose();
+    _moreFucusNode.dispose();
     super.dispose();
   }
 
@@ -127,7 +135,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                       focusNode: _nameFucusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter name';
+                       return 'Field is Required ';
                         }
                         return null;
                       },
@@ -147,7 +155,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                       focusNode: _shortNameFucusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a short name';
+                         return 'Field is Required ';
                         }
                         return null;
                       },
@@ -161,14 +169,13 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                       maxLines: 5,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                        labelText: 'About ',
-                        hintText: 'e.g. The Iron Lady',
+                        labelText: 'Enter abour information ',
                       ),
-                      controller: _shortNameController,
-                      focusNode: _shortNameFucusNode,
+                      controller: _aboutController,
+                      focusNode: _aboutFucusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a short name';
+                          return 'Field is Required ';
                         }
                         return null;
                       },
@@ -182,14 +189,13 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                       maxLines: 5,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                        labelText: 'More ',
-                        hintText: 'e.g. The Iron Lady',
+                        labelText: 'Enter more information',
                       ),
-                      controller: _shortNameController,
-                      focusNode: _shortNameFucusNode,
+                      controller: _moreController,
+                      focusNode: _moreFucusNode,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a short name';
+                         return 'Field is Required ';
                         }
                         return null;
                       },
@@ -205,8 +211,20 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                     SizedBox(height: 8.0),
                     InkWell(
                       onTap: () async  {
-                          var response = await Get.to(()=> SelectTouristLocationSpotScreen());
-                          print(response);
+                          GeoModel response = await Get.to(()=> SelectTouristLocationSpotScreen());
+
+                          print("wazap");
+                          if(response != null){
+                          
+                           location = response.formatted_address;
+
+                          }else{
+                            location = '';
+                          }
+
+                          setState(() {
+
+                          });
                       },
                       child: Container(
                         height: 50.0,
@@ -237,13 +255,17 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                     ),
                     VSpace(16),
                     Container(
+                      padding: EdgeInsets.all(20),
                         constraints: BoxConstraints(
                           minHeight: 100,
                         ),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(8.0),
-                        )),
+                        
+                        ),
+                        child: Center(child: Text(location ?? '') ,),
+                        ),
                     const VSpace(20),
                     Text(
                       'Main image',

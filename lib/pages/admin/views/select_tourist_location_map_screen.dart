@@ -1,12 +1,17 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:dirita_tourist_spot_app/delegates/location_search_delegate.dart';
+import 'package:dirita_tourist_spot_app/models/geo_model.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/controllers/tourist_spot_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/controller/geolocation_controller.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
+import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/rounded_card_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
@@ -22,6 +27,7 @@ class SelectTouristLocationSpotScreen extends StatefulWidget {
 }
 
 class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationSpotScreen> {
+  final touristController = Get.find<TouristSpotController>();
   final Completer<GoogleMapController> _googleMapController =  Completer<GoogleMapController>();
   late GoogleMapController _newGoogleMapController;
 
@@ -58,6 +64,10 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
     CameraPosition cameraposition = CameraPosition(
         target: latLngPosition, zoom: 16.999, tilt: 40, bearing: -1000);
     _newGoogleMapController .animateCamera(CameraUpdate.newCameraPosition(cameraposition));
+
+    if(touristController.temporaryAddressInformation.value.formatted_address != null){
+    setInitialMarker();
+    }
   }
 
   void setLocation(LatLng latlng){ 
@@ -66,6 +76,19 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
     setCircle(latlng);
     moveCamera(latlng);
 
+    touristController.getLocationInformation(context: context, latlng: latlng);
+
+
+  }
+
+
+  void clearMap(){
+
+    setState(() {
+      
+        markerSet.clear();
+        circleSet.clear();
+    });
   }
 
   void moveCamera(LatLng latlng){
@@ -82,6 +105,7 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
     );
     setState(() {
       markerSet.add(selectedMarker as Marker);
+
     });
   }
   
@@ -100,6 +124,13 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
     });
   }
 
+  void setInitialMarker(){
+
+    LatLng latLng = LatLng(touristController.temporaryAddressInformation.value.latitude as double  ,touristController.temporaryAddressInformation.value.longitude as double);
+    setLocation(latLng);
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +138,17 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
         title: const Text('Set Location'),
         centerTitle: true,
         leading: IconButton(
-            onPressed: () => Get.back(result: null),
+            onPressed: () {
+
+              if(touristController.temporaryAddressInformation.value.formatted_address != null && touristController.temporaryAddressInformation.value.isConfirmed == true ){
+                    Get.back(result: touristController.temporaryAddressInformation.value);
+              }else{
+                Get.back(result: null);
+              }
+               
+             
+               
+            },
             icon: Icon(Icons.arrow_back)),
         actions: [
           IconButton(
@@ -147,73 +188,122 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
               locationPosition(context);
             },
           ),
+
+
           Positioned(
             bottom: 0,
             right: 0,
             left: 0,
-            child: RoundedCardWidget(
-              height: MediaQuery.of(context).size.height * 0.30,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(
-                    'Tap map to select location',
-                    style: TextStyle(
-                      fontSize: 16,
+            child: GetBuilder<TouristSpotController>(
+              builder:(controller)  => RoundedCardWidget(
+                height: MediaQuery.of(context).size.height * 0.30,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                   
+                    Text(
+                      'Tap map to select location',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          VSpace(10),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                  width: 0.4,
-                                  color: Colors.grey,
-                                )),
-                            padding: EdgeInsets.all(20),
-                            child: Center(
-                              child: Text('No location was selected  at this  moment  '),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            VSpace(10),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                    width: 0.4,
+                                    color: Colors.grey,
+                                  )),
+                              padding: EdgeInsets.all(20),
+                              child: Center(
+                                child:controller.isRequesting.value ?  LoaderWidget(width: 20, height: 20,) :    Text(controller.temporaryAddressInformation.value.formatted_address != null ? controller.temporaryAddressInformation.value.formatted_address as String  :   'No location was selected  at this  moment  '),
+                              ),
                             ),
-                          ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    VSpace(10),
+                   Expanded(
+                      child: Row(
+                        children: [
+                         if(controller.temporaryAddressInformation.value.formatted_address != null)   Flexible(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                onPressed: () {
+                                  controller.clearSelectedAddress();
+                                clearMap();
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.grey.shade100,
+                                  primary: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Clear".toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey.shade600,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ).animate().scale(),
+                        if(controller.temporaryAddressInformation.value.formatted_address != null)  HSpace(20),
+                           if(controller.temporaryAddressInformation.value.formatted_address != null) Flexible(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: TextButton(
+                                onPressed: () {
+                                  
+                                        
+                                        Get.back(result:  controller.temporaryAddressInformation.value);
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: AppTheme.ORANGE,
+                                  primary: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Confirm".toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ).animate().scale(),
                         ],
                       ),
                     ),
-                  ),
-                  VSpace(10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: AppTheme.ORANGE,
-                        primary: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Text(
-                        "Confirm".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          )
+          ),
+
+        
         ],
       ),
+
     );
   }
 }
