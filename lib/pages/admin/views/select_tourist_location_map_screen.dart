@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'dart:ffi';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:dirita_tourist_spot_app/delegates/location_search_delegate.dart';
 import 'package:dirita_tourist_spot_app/models/geo_model.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/controllers/tourist_spot_controller.dart';
@@ -10,17 +16,16 @@ import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/rounded_card_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:get/get.dart';
 
 import '../../../utils/app_theme.dart';
 
 class SelectTouristLocationSpotScreen extends StatefulWidget {
-  const SelectTouristLocationSpotScreen({Key? key}) : super(key: key);
 
+  GeoModel? selectedLocation;
+   SelectTouristLocationSpotScreen({
+    Key? key,
+    this.selectedLocation,
+  }) : super(key: key);
   @override
   _SelectTouristLocationSpotScreenState createState() =>
       _SelectTouristLocationSpotScreenState();
@@ -65,9 +70,9 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
         target: latLngPosition, zoom: 16.999, tilt: 40, bearing: -1000);
     _newGoogleMapController .animateCamera(CameraUpdate.newCameraPosition(cameraposition));
 
-    if(touristController.temporaryAddressInformation.value.formatted_address != null){
+   
     setInitialMarker();
-    }
+    
   }
 
   void setLocation(LatLng latlng){ 
@@ -126,8 +131,19 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
 
   void setInitialMarker(){
 
-    LatLng latLng = LatLng(touristController.temporaryAddressInformation.value.latitude as double  ,touristController.temporaryAddressInformation.value.longitude as double);
-    setLocation(latLng);
+
+    if(widget.selectedLocation != null && widget.selectedLocation!.formatted_address != null){ 
+
+      LatLng latLng = LatLng(widget.selectedLocation!.latitude as double  ,  widget.selectedLocation!.longitude as double);
+        setLocation(latLng);
+    }else if(touristController.temporaryAddressInformation.value.formatted_address != null ){
+        LatLng latLng = LatLng(touristController.temporaryAddressInformation.value.latitude as double  ,  touristController.temporaryAddressInformation.value.longitude as double);
+        setLocation(latLng);
+    }
+    
+   
+    
+
   }
   
 
@@ -137,23 +153,33 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
       appBar: AppBar(
         title: const Text('Set Location'),
         centerTitle: true,
-        leading: IconButton(
-            onPressed: () {
+        leading: IconButton(  
+            onPressed: () { 
 
-              if(touristController.temporaryAddressInformation.value.formatted_address != null && touristController.temporaryAddressInformation.value.isConfirmed == true ){
-                    Get.back(result: touristController.temporaryAddressInformation.value);
-              }else{
-                Get.back(result: null);
-              }
-               
+                if( widget.selectedLocation != null && widget.selectedLocation!.formatted_address != null  && touristController.temporaryAddressInformation.value.formatted_address != null){
+
+                    Get.back(result: widget.selectedLocation);                        
+
+                } else if( widget.selectedLocation != null && widget.selectedLocation!.formatted_address != null){
+                       Get.back(result: GeoModel());      
+                }else{
+                     Get.back(result: null); 
+                }
+          
              
                
             },
             icon: Icon(Icons.arrow_back)),
         actions: [
           IconButton(
-              onPressed: () => showSearch(
-                  context: context, delegate: LocationSearchDelegate()),
+              onPressed: () async {
+                final response = await  showSearch(context: context, delegate: LocationSearchDelegate());
+
+                if(response != null){
+                    setLocation(response);
+                }
+
+              },
               icon: Icon(Icons.search)),
           const HSpace(10),
         ],
@@ -239,8 +265,9 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
                               width: double.infinity,
                               child: TextButton(
                                 onPressed: () {
+                                  
                                   controller.clearSelectedAddress();
-                                clearMap();
+                                  clearMap();
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: Colors.grey.shade100,
@@ -269,7 +296,6 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
                               child: TextButton(
                                 onPressed: () {
                                   
-                                        
                                         Get.back(result:  controller.temporaryAddressInformation.value);
                                 },
                                 style: TextButton.styleFrom(

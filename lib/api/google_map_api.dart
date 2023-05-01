@@ -23,4 +23,24 @@ static Future<Response<dynamic>> geoRequest(LatLng latlng) async
      return response;
      
 }   
+
+static Future<Response<dynamic>> placeApiRequest(String place) async 
+{
+     final response = await dio.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${place}&key=${GOOGLE_MAP_API_KEY}&components:country:ph');
+     return response;
+     
+}   
+
+static Future<Response<dynamic>> placeDetailsRequest(String place_id) async 
+{
+
+
+     final response = await dio.get('https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&components=country:ph&key=${GOOGLE_MAP_API_KEY}');
+     return response;
+     
+}   
+
+
+
+
 }

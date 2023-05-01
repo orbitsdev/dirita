@@ -24,7 +24,8 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
   late TextEditingController _shortNameController;
   late TextEditingController _aboutController;
   late TextEditingController _moreController;
-  String? location;
+
+  GeoModel? selectedLocation;
 
   late FocusNode _nameFucusNode;
   late FocusNode _shortNameFucusNode;
@@ -122,14 +123,13 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Tourist Spot Name',
+                      'Tourist spot name',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextFormField(
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                        labelText: 'Enter name',
-                        hintText: 'e.g. Eiffel Tower',
+                      
                       ),
                       controller: _nameController,
                       focusNode: _nameFucusNode,
@@ -142,14 +142,13 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Also Known As',
+                      'Tourist spot famouse name',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextFormField(
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                        labelText: 'Enter a short name',
-                        hintText: 'e.g. The Iron Lady',
+                      
                       ),
                       controller: _shortNameController,
                       focusNode: _shortNameFucusNode,
@@ -162,14 +161,14 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                     ),
                     const VSpace(20),
                     Text(
-                      'Abour information',
+                      'About information',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextFormField(
                       maxLines: 5,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                        labelText: 'Enter abour information ',
+                        
                       ),
                       controller: _aboutController,
                       focusNode: _aboutFucusNode,
@@ -189,7 +188,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                       maxLines: 5,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                        labelText: 'Enter more information',
+                       
                       ),
                       controller: _moreController,
                       focusNode: _moreFucusNode,
@@ -202,7 +201,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                     ),
                     const VSpace(20),
                     Text(
-                      'Location',
+                      'Tourist spot Location',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,
@@ -211,20 +210,20 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                     SizedBox(height: 8.0),
                     InkWell(
                       onTap: () async  {
-                          GeoModel response = await Get.to(()=> SelectTouristLocationSpotScreen());
+                          GeoModel response = await Get.to(()=> SelectTouristLocationSpotScreen(selectedLocation:selectedLocation));
 
-                          print("wazap");
                           if(response != null){
-                          
-                           location = response.formatted_address;
-
+                              setState((){
+                                selectedLocation = response;
+                              });
                           }else{
-                            location = '';
+                             setState((){
+                                selectedLocation = null;
+                              });
                           }
 
-                          setState(() {
 
-                          });
+                         
                       },
                       child: Container(
                         height: 50.0,
@@ -239,7 +238,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0),
                                 child: Text(
-                                  "Tap to select location",
+                                  "Find",
                                   style: TextStyle(color: Colors.grey),
                                 ),
                               ),
@@ -264,21 +263,23 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                           borderRadius: BorderRadius.circular(8.0),
                         
                         ),
-                        child: Center(child: Text(location ?? '') ,),
+                        child: Center(child: Text(selectedLocation?.formatted_address ?? '') ,),
                         ),
                     const VSpace(20),
                     Text(
-                      'Main image',
+                      'Tourist spot cover image',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                                           const VSpace(10),
+
                     Align(
                       alignment: Alignment.center,
                       child: GestureDetector(
                         onTap: chooseImage,
                         child: Container(
-                          width: 150,
+                       
                           height: 150,
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey),
@@ -305,13 +306,15 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                                         const VSpace(20),
 
                     Text(
-                      'Featured image',
+                      'Tourist spot featured image',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                       const VSpace(10),
                     Container(
                       height: 215,
+                      
                       child: GridView.builder(
                         itemCount: _images.length + 1,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
