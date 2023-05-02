@@ -1,10 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
-import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_location.dart';
-import 'package:dirita_tourist_spot_app/utils/asset.dart';
-import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
-import 'package:dirita_tourist_spot_app/widgets/sv_space.dart';
-import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
@@ -12,11 +6,23 @@ import 'package:shimmer/shimmer.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
+import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_location.dart';
+import 'package:dirita_tourist_spot_app/utils/asset.dart';
+import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
+import 'package:dirita_tourist_spot_app/widgets/sv_space.dart';
+import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
+
 import '../../../utils/app_theme.dart';
 
 class TouristSpotDetails extends StatefulWidget {
-  const TouristSpotDetails({Key? key}) : super(key: key);
 
+   TouristSpot? touristspot;
+ TouristSpotDetails({
+    Key? key,
+    this.touristspot,
+  }) : super(key: key);
   @override
   State<TouristSpotDetails> createState() => _TouristSpotDetailsState();
 }
@@ -90,43 +96,25 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
               IconButton(onPressed: () {}, icon: Icon(Icons.tag)),
             ],
           ),
-          // SliverAppBar(
-          //   expandedHeight: 300,
-          //   pinned: true,
-          //   flexibleSpace: FlexibleSpaceBar(
-          //     title: Text('TEscrot'),
-          //     background: CachedNetworkImage(
-          //       imageUrl: sampleimage,
-          //       placeholder: (context, url) => Shimmer.fromColors(
-          //         baseColor: Colors.grey[300]!,
-          //         highlightColor: Colors.grey[100]!,
-          //         child: Container(
-          //           color: Colors.white,
-          //         ),
-          //       ),
-          //       errorWidget: (context, url, error) => Icon(Icons.error),
-          //       fit: BoxFit.cover,
+         
+
+          // SliverToBoxAdapter(
+          //   child: Container(
+          //     padding: EdgeInsets.all(16),
+          //     child: Text(
+          //       // If listening is active show the recognized words
+          //       _speechToText.isListening
+          //           ? '$_lastWords'
+          //           // If listening isn't active but could be tell the user
+          //           // how to start it, otherwise indicate that speech
+          //           // recognition is not yet ready or not supported on
+          //           // the target device
+          //           : _speechEnabled
+          //               ? 'Tap the microphone to start listening...'
+          //               : 'Speech not available',
           //     ),
           //   ),
           // ),
-
-          SliverToBoxAdapter(
-            child: Container(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                // If listening is active show the recognized words
-                _speechToText.isListening
-                    ? '$_lastWords'
-                    // If listening isn't active but could be tell the user
-                    // how to start it, otherwise indicate that speech
-                    // recognition is not yet ready or not supported on
-                    // the target device
-                    : _speechEnabled
-                        ? 'Tap the microphone to start listening...'
-                        : 'Speech not available',
-              ),
-            ),
-          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -134,7 +122,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Balot Island White Sand Ressort',
+                    widget.touristspot?.name ?? 'Tourist spot name',
                     style: Theme.of(context).textTheme.headline1!.copyWith(
                           height: 0,
                           fontSize: 38,
@@ -166,7 +154,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                     child: Stack(children: [
                       ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 10,
+                        itemCount:  widget.touristspot?.featured_image?.length ?? 0,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -205,22 +193,22 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                           );
                         },
                       ),
-                      Positioned(
-                          bottom: 10,
-                          left: 10,
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                            child: Center(
-                                child: Text(
-                              '1 / 25',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            )),
-                          )),
+                      // Positioned(
+                      //     bottom: 10,
+                      //     left: 10,
+                      //     child: Container(
+                      //       padding: EdgeInsets.all(8),
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(15),
+                      //         color: Colors.black.withOpacity(0.8),
+                      //       ),
+                      //       child: Center(
+                      //           child: Text(
+                      //         '1 / 25',
+                      //         style:
+                      //             TextStyle(color: Colors.white, fontSize: 16),
+                      //       )),
+                      //     )),
                     ]),
                   ),
                   const VSpace(20),
@@ -241,7 +229,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                                   color: AppTheme.ORANGE,
                                 ),
                                 HSpace(6),
-                                Text('Sultan Kudarat 237 VHX 086232')
+                                Flexible(child: Text(widget.touristspot?.formatted_address ?? 'Sultan Kudarat 237 VHX 086232'))
                               ],
                             )),
                       ]),

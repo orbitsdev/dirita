@@ -6,7 +6,9 @@
 
 import 'package:dirita_tourist_spot_app/pages/auth/views/login_screen_widget.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Modal {
 
@@ -178,6 +180,92 @@ static void showErrorDialog({required BuildContext context, String message = 'Er
     },
   );
 }
+
+static void showToast({required BuildContext context, String message = 'Hellow'}){
+
+  Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: AppTheme.RED,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+}
+
+static void showSuccesToast({required BuildContext context, String message = 'Success'}){
+
+  Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+}
+
+
+  static void showUploadProgress(
+      {required BuildContext context, required TaskSnapshot snapshot}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Uploading file...'),
+                SizedBox(height: 16.0),
+                Text(
+                  '${(snapshot.totalBytes / 1024 / 1024).toStringAsFixed(2)} MB',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                SizedBox(height: 16.0),
+                LinearProgressIndicator(
+                  value: snapshot.bytesTransferred / snapshot.totalBytes,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  static void test({required BuildContext context, String filetype = 'Uploading file...'}){
+    showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Container(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(filetype),
+                  SizedBox(height: 16.0),
+                  Text(
+                    '25 MB',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  SizedBox(height: 16.0),
+                  LinearProgressIndicator(
+                    value:100,
+                  ),
+                ],
+              ),
+            ),
+      );
+    },
+  );
+  }
 
 
 }

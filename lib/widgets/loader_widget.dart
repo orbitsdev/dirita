@@ -9,11 +9,13 @@ class LoaderWidget extends StatelessWidget {
 double? width; 
 double? height; 
 double? stroke; 
+Color? color;
  LoaderWidget({
     Key? key,
     this.width,
     this.height,
     this.stroke,
+    this.color,
   }) : super(key: key);
   
 
@@ -25,7 +27,7 @@ double? stroke;
       child: CircularProgressIndicator(
                   strokeWidth: stroke ?? 2.5 ,
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    AppTheme.ORANGE,
+                    color??AppTheme.ORANGE,
                   ),
                 ),
     );

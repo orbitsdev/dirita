@@ -124,18 +124,22 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                    return SizedBox(
                     width: double.infinity,
                     height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.ORANGE,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () => controller.isLoginLoading.value ? null :  _login(context),
-                      child:  Center(
-                        child: Text(
-                          'Login ${controller.isLoginLoading.value.toString()}',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
+                    child: Builder(
+                      builder: (context) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.ORANGE,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: () => controller.isLoginLoading.value ? null :  _login(context),
+                          child:  Center(
+                            child: Text(
+                              'Login ${controller.isLoginLoading.value.toString()}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        );
+                      }
                     ),
                   );
                   }

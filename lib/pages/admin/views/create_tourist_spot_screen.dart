@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:dirita_tourist_spot_app/models/geo_model.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/controllers/tourist_spot_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/select_tourist_location_map_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
+import 'package:dirita_tourist_spot_app/utils/modal.dart';
+import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +22,7 @@ class CreateTouristSpotScreen extends StatefulWidget {
 
 class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
   final authcontroller = Get.find<AuthController>();
+  final touristcontroller = Get.find<TouristSpotController>();
 
   late TextEditingController _nameController;
   late TextEditingController _shortNameController;
@@ -104,6 +108,54 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
         _image = File(pickedFile.path);
       });
     }
+  }
+
+
+  _save(BuildContext context){
+       _focusScopeNode.unfocus();
+
+    // Validate the form
+    if (_key.currentState!.validate()) {
+
+
+          
+          if(selectedLocation == null  || selectedLocation?.formatted_address == null){
+             Modal.showToast(context: context, message: 'Tourist spot  location is required');
+             return;
+          }
+
+          if(_image == null){
+              Modal.showToast(context: context, message: 'Cover  image is required');
+              return;
+          }
+
+          if(_images.length < 3){
+              Modal.showToast(context: context, message: 'You should have atleast 3 featured image');
+              return;
+          } 
+
+       
+            touristcontroller.createTouristSpot(
+              context: context, name: _nameController.text.trim(),
+              famouse_name: _shortNameController.text.trim(),
+              about_information: _aboutController.text.trim(),
+              more_information: _moreController.text,
+              formmated_address: selectedLocation?.formatted_address as String , 
+              place_id: selectedLocation?.place_id as String, 
+              latitude: selectedLocation?.latitude as double , 
+              longtitude: selectedLocation?.longitude as double,
+              cover_image: _image as File,
+              featured_image: _images,
+              );
+
+    }
+
+  }
+
+  void removeFeaturedImage(int index){
+     setState(() {
+    _images.removeAt(index);
+  });
   }
 
   @override
@@ -287,6 +339,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                           ),
                           child: _image != null
                               ? Image.file(
+                                  width: double.infinity,
                                   _image!,
                                   fit: BoxFit.cover,
                                   errorBuilder: (BuildContext context,
@@ -315,75 +368,115 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                     Container(
                       height: 215,
                       
-                      child: GridView.builder(
-                        itemCount: _images.length + 1,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 5,
-                          crossAxisSpacing: 5,
-                        ),
-                        itemBuilder: (context, index) {
-                          return index == 0
-                              ? Container(
-                                
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(5),
-                              ),
-                                child: Center(
-                                    child: IconButton(
-                                      onPressed: chooseImages,
-                                      icon: Icon(Icons.add),
-                                    ),
-                                  ),
-                              )
-                              : Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: ClipRRect(
+                      child: GestureDetector(
+                         behavior: HitTestBehavior.opaque,
+  onTap: () {
+    // Handle tap here
+  },
+                        child: GridView.builder(
+                          itemCount: _images.length + 1,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 5,
+                          ),
+                          itemBuilder: (context, index) {
+                            return index == 0
+                                ? Container(
+                                  
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
                                     borderRadius: BorderRadius.circular(5),
-                                    child: Image.file(
-                                      _images[index - 1],
-                                      fit: BoxFit.cover,
+                                ),
+                                  child: Center(
+                                      child: IconButton(
+                                        onPressed: chooseImages,
+                                        icon: Icon(Icons.add),
+                                      ),
                                     ),
-                                  ),
-                                );
-                        },
-                      ),
-                    ),
-                    const VSpace(20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          backgroundColor: AppTheme.ORANGE,
-                          primary: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                                )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                         ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: Image.file(
+                                          _images[index - 1],
+                                          fit: BoxFit.cover,
+                                        ),
+                                        
+                                      ),
+                      
+                                    Positioned(
+                        top:  -16,
+                        right: -10,
+                        child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                  onTap: () => removeFeaturedImage(index - 1),
+                          child: ClipOval(
+                          
+                            child: Container( 
+
+                              color: Colors.grey.shade300,
+                              width: 26,
+                              height: 26,
+                              child: Icon(Icons.close, color: Colors.black, size: 16,),
+                            ),
                           ),
                         ),
-                        child: const Text(
-                          "Save",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      ),
+                                      ]
+                                    ),
+                                  );
+                          },
                         ),
                       ),
                     ),
+                    const VSpace(10),
+                   
+                       GetBuilder<TouristSpotController>(
+                         builder:(controller)=> SizedBox(
+                          height: 50,
+                            width: double.infinity,
+                            child: TextButton(
+                              onPressed: () => controller.isCreating.value ? null :  _save(context),
+                              style: TextButton.styleFrom(
+                                
+                                backgroundColor: AppTheme.ORANGE,
+                                primary: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: controller.isCreating.value ? LoaderWidget(color: Colors.white,) : const Text(
+                                "Save",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                       ),  
                     const VSpace(20),
                   ],
                 ),
               ),
             ),
           ),
-        ));
+        ),
+
+       
+        );
   }
 }

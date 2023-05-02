@@ -26,27 +26,7 @@ class _TouristScreenState extends State<TouristScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: CustomScrollView(
         slivers: [
-          // SliverToBoxAdapter(
-          //   child: Container(
-          //     padding: EdgeInsets.all(16),
-          //     height: 70,
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(15),
-          //       color: Colors.white,
-              
-          //     ),
-          //     child: Row(
-          //       children: [
-          //           Container(
-          //             height: 40,
-          //             width: 40,
-          //             child:Center(child: Text('20'),) ,
-          //           ),
-          //           Text('Total  Tourist Spots')
-          //       ],
-          //     ),
-          //   ),
-          // ),
+          
          
         SliverPersistentHeader(
       pinned: true,
@@ -73,7 +53,7 @@ class _TouristScreenState extends State<TouristScreen> {
             children: List.generate(
               30,
               (index) => GestureDetector(
-                onTap: () => Get.to(() => const TouristSpotDetails(),
+                onTap: () => Get.to(() => TouristSpotDetails(),
                     transition: Transition.cupertino),
                 child: const SizedBox(
                   height: 300,

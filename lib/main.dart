@@ -43,7 +43,7 @@ class _DiritaAppState extends State<DiritaApp> {
   
 final authcontroller = Get.find<AuthController>();
 Widget authscreenlogic() {
-  return CreateTouristSpotScreen();
+  return AdminScreen();
 
   if(widget.showOnBoarding == false) {
     return const BoardingScreen();

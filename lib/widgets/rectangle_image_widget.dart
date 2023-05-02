@@ -30,7 +30,7 @@ class RectangleImageWidget extends StatelessWidget {
   imageUrl:url!,
   imageBuilder: (context, imageProvider) => GestureDetector(
 
-    onTap: ()=> viewable == false ? null : Get.to(()=> FullScreenImage()),
+    onTap: ()=> viewable == false ? null : Get.to(()=> FullScreenImage(imageUrl: url,)),
     child: Container(
       
       decoration: BoxDecoration(
