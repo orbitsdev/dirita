@@ -91,32 +91,38 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
   }
 
 
- Map<String, String> _selectedLanguage = {"name": "English", "code": "en"};
- _onLanguageChanged(Map<String, String> language) { 
-    setState(() {
-      _selectedLanguage = language;
-    print(_selectedLanguage);
-     
-    });
-
+  String language_code = 'en';
+   void setLanguageCode(code){
+      setState((){
+        language_code= code;
+        print(code);
+      });
+   }
+  void speakAllInformation(BuildContext context) async {
+    
+      String message =  await TextToSpeechController.convertMessageToSelectedLanguage( code:language_code , message: '${widget.touristspot!.about_information}${widget.touristspot!.more_information}');
+    
+     TextToSpeechController.speak(message);
+     Get.back();
   }
+  void speakbasicInformation(BuildContext context) async {
 
-  void speakAllInformation(){
-      TextToSpeechController.speak('${widget.touristspot!.about_information}${widget.touristspot!.more_information}');
-                      Get.back();
-  }
-  void speakbasicInformation(){
-      TextToSpeechController.speak('${widget.touristspot!.about_information}');
-                      Get.back();
+    
+
+      String message =  await TextToSpeechController.convertMessageToSelectedLanguage( code:language_code , message: '${widget.touristspot!.about_information}');
+      TextToSpeechController.speak(message);
+     Get.back();
+      
   }
 
   void selectInformation(BuildContext context) async {
     
     await TextToSpeechController.speak(VoiceAiSpeech.selectinformation);
     if(widget.touristspot != null){
-    Modal.showInformationOptions(context: context, speakAllInformation: speakAllInformation, speakBasicInformation: speakbasicInformation, onLanguageChanged: _onLanguageChanged);
+    Modal.showInformationOptions(context: context, speakAllInformation: speakAllInformation, speakBasicInformation: speakbasicInformation, onLanguageChanged:setLanguageCode);
 
     }
+
 
     
   }

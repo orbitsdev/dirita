@@ -20,7 +20,7 @@ class _TlTestState extends State<TlTest> {
 
 
 final input = "hEllpwHw";
-  final message = TextEditingController(text: 'I apologize for any confusion. Here is an example of how to display a list of all available country codes with their corresponding names:');
+  final message = TextEditingController(text: 'I country codes:');
 
 final translator = GoogleTranslator();
 
@@ -32,9 +32,9 @@ void speak(BuildContext context) async {
   
   try{
 
-    await   translator.translate(message.text, to: 'ceb').then((output){
+    await  translator.translate(message.text, to: 'zh-tw').then((output){
   print(output);
-  TextToSpeechController.speak(output.text);
+  // TextToSpeechController.speak(output.text);
   });
   }catch(e){
     Modal.showErrorDialog(context: context, message: e.toString());

@@ -49,7 +49,9 @@ class _DiritaAppState extends State<DiritaApp> {
 final authcontroller = Get.find<AuthController>();
 Widget authscreenlogic() {
 
-  return TlTest();
+
+
+  // return TlTest();
   // return AdminScreen();
 
   if(widget.showOnBoarding == false) {

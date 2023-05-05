@@ -5,6 +5,8 @@ import 'package:dirita_tourist_spot_app/pages/auth/views/login_screen_widget.dar
 import 'package:dirita_tourist_spot_app/tydef.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/widgets/language_dropdown.dart';
+import 'package:dirita_tourist_spot_app/widgets/language_selector.dart';
+import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -276,66 +278,71 @@ class Modal {
   }
 
 
-  static void showInformationOptions({required BuildContext context, required Function speakAllInformation, required Function speakBasicInformation, required onLanguageSelection onLanguageChanged}) {
-    var  speechcontroller = Get.find<TextToSpeechController>();
+  static void showInformationOptions({required BuildContext context, required languageSpeak speakAllInformation, required languageSpeak speakBasicInformation, required LanguageSelectionCallback onLanguageChanged}) {
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return Center(
-          child: Container(
-            width: 300,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                   
-                    Text(
-                      'Options',
-                      style: TextStyle(),
-                    ),
-
-
-                    
-                    SizedBox(
-                      height: 34,
-                      width: 34,
-                      child: IconButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey.shade100),
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: Center(
-                          child: Icon(
-                            Icons.close,
-                            size: 20,
-                            color: Colors.grey.shade600,
+          child: Material(
+            child: Container(
+              width: 300,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     
+                      Text(
+                        'Options',
+                        style: TextStyle(),
+                      ),
+            
+            
+                      
+                      SizedBox(
+                        height: 34,
+                        width: 34,
+                        child: IconButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey.shade100),
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: Center(
+                            child: Icon(
+                              Icons.close,
+                              size: 20,
+                              color: Colors.grey.shade600,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-
-                
-
-              LanguageDropdown(onChanged: onLanguageChanged),
-
-              TextButton(onPressed: ()=> speakAllInformation, child: Text('All Information',style: TextStyle(color: Colors.black) ,)),
-              TextButton(onPressed: ()=> speakBasicInformation, child: Text('Basic Information', style: TextStyle(color: Colors.black)),),
-
-                
-               
-              ],
+                    ],
+                  ),
+            
+                  
+            
+                // LanguageDropdown(onChanged: onLanguageChanged),
+               LanguageSelector(
+                initialValue: 'tl',
+                onLanguageChanged: (code) => onLanguageChanged(code),
+               ),
+                // LoaderWidget(),
+                TextButton(onPressed: ()=> speakAllInformation(context), child: Text('All Information',style: TextStyle(color: Colors.black) ,)),
+                TextButton(onPressed: ()=> speakBasicInformation(context), child: Text('Basic Information', style: TextStyle(color: Colors.black)),),
+            
+                  
+                 
+                ],
+              ),
             ),
           ),
         );
