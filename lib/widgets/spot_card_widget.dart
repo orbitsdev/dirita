@@ -1,15 +1,23 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'dart:math';
+import 'package:shimmer/shimmer.dart';
+
+import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
+
 import '../utils/app_theme.dart';
 import '../utils/asset.dart';
 
-import 'package:shimmer/shimmer.dart';
-
 class SpotCardWidget extends StatelessWidget {
-  const SpotCardWidget({Key? key}) : super(key: key);
 
+
+     TouristSpot? touristspot;
+   SpotCardWidget({
+    Key? key,
+    this.touristspot,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +30,7 @@ class SpotCardWidget extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           CachedNetworkImage(
-            imageUrl: "https://picsum.photos/200/300?random=${randomUber()}",
+            imageUrl: touristspot?.cover_image ?? "https://picsum.photos/200/300?random=${randomUber()}",
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
@@ -67,7 +75,7 @@ class SpotCardWidget extends StatelessWidget {
             left: 0,
             child: Container(
             padding: const EdgeInsets.all(10) ,
-            child: Text('Balot Island Hey Yow'  , style: TextStyle(height: 0, fontSize: 22, color: Colors.white),),
+            child: Text(touristspot?.name ?? 'Tourist Title Here'  , style: TextStyle(height: 0, fontSize: 22, color: Colors.white),),
           )),
           Positioned(
             top: 0,

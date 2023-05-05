@@ -1,6 +1,13 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dirita_tourist_spot_app/utils/asset.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:dirita_tourist_spot_app/models/geo_model.dart';
+import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/controllers/tourist_spot_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/select_tourist_location_map_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
@@ -8,19 +15,20 @@ import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:shimmer/shimmer.dart';
 
-class CreateTouristSpotScreen extends StatefulWidget {
-  const CreateTouristSpotScreen({Key? key}) : super(key: key);
-
+class UpdateTouristSpotScreen extends StatefulWidget {
+  TouristSpot? touristspot;
+  UpdateTouristSpotScreen({
+    Key? key,
+    this.touristspot,
+  }) : super(key: key);
   @override
-  State<CreateTouristSpotScreen> createState() =>
-      _CreateTouristSpotScreenState();
+  State<UpdateTouristSpotScreen> createState() =>
+      _UpdateTouristSpotScreenState();
 }
 
-class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
+class _UpdateTouristSpotScreenState extends State<UpdateTouristSpotScreen> {
   final authcontroller = Get.find<AuthController>();
   final touristcontroller = Get.find<TouristSpotController>();
 
@@ -42,16 +50,29 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
   final picker = ImagePicker();
   List<File> _images = [];
   File? _image;
+  late List<String> existing_featured_image;
+   List<String> remove_featured = [];
 
   @override
   void initState() {
     // TODO: implement initStat
     super.initState();
 
-    _nameController = TextEditingController();
-    _shortNameController = TextEditingController();
-    _aboutController = TextEditingController();
-    _moreController = TextEditingController();
+    _nameController =
+        TextEditingController(text: widget.touristspot?.name ?? '');
+    _shortNameController =
+        TextEditingController(text: widget.touristspot?.famouse_name ?? '');
+    _aboutController = TextEditingController(
+        text: widget.touristspot?.about_information ?? '');
+    _moreController =
+        TextEditingController(text: widget.touristspot?.more_information ?? '');
+    selectedLocation = GeoModel(
+      place_id: widget.touristspot?.place_id ?? '',
+      formatted_address: widget.touristspot?.formatted_address ?? '',
+      latitude: widget.touristspot?.latitude,
+      longitude: widget.touristspot?.longtitude,
+    );
+    existing_featured_image = widget.touristspot?.featured_image ?? [];
 
     _nameFucusNode = FocusNode();
     _shortNameFucusNode = FocusNode();
@@ -108,7 +129,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
     }
   }
 
-  _save(BuildContext context) {
+  _update(BuildContext context) {
     _focusScopeNode.unfocus();
 
     // Validate the form
@@ -120,38 +141,74 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
         return;
       }
 
-      if (_image == null) {
+      if (_image == null && widget.touristspot?.cover_image == null) {
         Modal.showToast(context: context, message: 'Cover  image is required');
         return;
       }
+      List<String>? featured_image_url =
+          widget.touristspot!.featured_image ?? [];
 
-      if (_images.length < 3) {
+      if (featured_image_url.isEmpty && _images.length < 3) {
         Modal.showToast(
             context: context,
             message: 'You should have atleast 3 featured image');
         return;
       }
 
-      touristcontroller.createTouristSpot(
-        context: context,
+      TouristSpot updated_value_toursit_spot = widget.touristspot!.copyWith(
+
         name: _nameController.text.trim(),
         famouse_name: _shortNameController.text.trim(),
         about_information: _aboutController.text.trim(),
-        more_information: _moreController.text,
-        formmated_address: selectedLocation?.formatted_address as String,
-        place_id: selectedLocation?.place_id as String,
-        latitude: selectedLocation?.latitude as double,
-        longtitude: selectedLocation?.longitude as double,
-        cover_image: _image as File,
-        featured_image: _images,
+        more_information: _moreController.text.trim(),
+        formatted_address: selectedLocation!.formatted_address,
+        place_id: selectedLocation!.place_id,
+        latitude: selectedLocation!.latitude,
+        longtitude: selectedLocation!.longitude,
+
       );
+
+      touristcontroller.updateTouristSpot(
+          context: context,
+          touristspot: updated_value_toursit_spot,
+          cover_image: _image,
+          featured_image: _images,
+          remove_featured: remove_featured
+          );
     }
   }
 
   void removeFeaturedImage(int index) {
+     int total_featured_image =existing_featured_image.length + _images.length;
+
+     if(total_featured_image > 3){
+
     setState(() {
       _images.removeAt(index);
     });
+
+     }else{
+              Modal.showToast(context: context ,message: '3  featured  image. Try adding one first to delete the image');
+
+     }
+  }
+
+  void removeExistingFeatured(int index) {
+       int total_featured_image =existing_featured_image.length + _images.length;
+
+
+       if(total_featured_image > 3){
+
+         setState(() {
+         remove_featured.add(existing_featured_image[index]);
+          existing_featured_image.removeAt(index);
+        });
+       }else{
+        Modal.showToast(context: context ,message: 'You must have atleast 3  featured  image. Try adding one to delete the image');
+       }
+
+
+    
   }
 
   @override
@@ -335,13 +392,98 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                                       child: Text('Error loading image'));
                                 },
                               )
-                            : Center(
-                                child: Icon(Icons.image),
-                              ),
+                            : widget.touristspot?.cover_image != null
+                                ? CachedNetworkImage(
+                                    imageUrl: widget.touristspot?.cover_image ??
+                                        Asset.avatarDefault,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    placeholder: (_, __) => Shimmer.fromColors(
+                                      child: Container(
+                                        color: Colors.grey[300],
+                                      ),
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                      period:
+                                          const Duration(milliseconds: 1500),
+                                    ),
+                                  )
+                                : Center(
+                                    child: Icon(Icons.image),
+                                  ),
                       ),
                     ),
                   ),
                   const VSpace(20),
+                  if (existing_featured_image.length > 0)
+                    Column(
+                      children: [
+                        Text(
+                          'Existing featured image',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const VSpace(10),
+                        GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        // Handle tap here
+                      },
+                          child: Wrap(
+                            spacing: 8.0,
+                            runSpacing: 8.0,
+                            children: List.generate(
+                          existing_featured_image.length,
+                          (index) => Stack(
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: CachedNetworkImage(
+                                    imageUrl: existing_featured_image[index],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Shimmer.fromColors(
+                                      child: Container(color: Colors.grey[300]),
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                    ),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                   behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    setState(() {
+                                      removeExistingFeatured(index);
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Icon(Icons.close, size: 18),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ),
+                          ),
+                        )
+                      ],
+                    ),
+
+                  const VSpace(20),
+
+             
                   Text(
                     'Tourist spot featured image',
                     style: TextStyle(
@@ -429,8 +571,9 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                       height: 50,
                       width: double.infinity,
                       child: TextButton(
-                        onPressed: () =>
-                            controller.isCreating.value ? null : _save(context),
+                        onPressed: () => controller.isUpdating.value
+                            ? null
+                            : _update(context),
                         style: TextButton.styleFrom(
                           backgroundColor: AppTheme.ORANGE,
                           primary: Colors.white,
@@ -440,12 +583,12 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: controller.isCreating.value
+                        child: controller.isUpdating.value
                             ? LoaderWidget(
                                 color: Colors.white,
                               )
                             : const Text(
-                                "Save",
+                                "Update",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

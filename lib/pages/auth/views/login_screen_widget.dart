@@ -134,7 +134,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                           onPressed: () => controller.isLoginLoading.value ? null :  _login(context),
                           child:  Center(
                             child: Text(
-                              'Login ${controller.isLoginLoading.value.toString()}',
+                              'Login',
                               style: TextStyle(fontSize: 16),
                             ),
                           ),

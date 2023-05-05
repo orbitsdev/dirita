@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/delegates/sticky_header_delegate.dart';
+import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
@@ -46,22 +48,59 @@ class _TouristScreenState extends State<TouristScreen> {
         ),
       ),
     ),
-          SliverGrid.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            children: List.generate(
-              30,
-              (index) => GestureDetector(
-                onTap: () => Get.to(() => TouristSpotDetails(),
-                    transition: Transition.cupertino),
-                child: const SizedBox(
-                  height: 300,
-                  child: SpotCardWidget(),
-                ),
-              ),
+StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      stream: FirebaseFirestore.instance.collection('touristspot').snapshots(),
+      builder: (context, snapshot) {
+
+        if(snapshot.hasError){
+          return Center(child: Text('Something went wrong'));
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SliverFillRemaining(
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
+          );
+        }
+                  final touristspots = snapshot.data!.docs.map((doc) =>  TouristSpot.fromMap(doc.data())).toList();
+
+
+        return SliverGrid.count(
+          crossAxisCount: 2,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          children: touristspots.map((spot) {
+            
+
+            return GestureDetector(
+              onTap: () => Get.to(() => TouristSpotDetails(touristspot:spot),
+                  transition: Transition.cupertino),
+              child: SizedBox(
+                height: 300,
+                child: SpotCardWidget(touristspot:spot),
+              ),
+            );
+          }).toList(),
+        );
+      },
+    ),
+
+          // SliverGrid.count(
+          //   crossAxisCount: 2,
+          //   mainAxisSpacing: 12,
+          //   crossAxisSpacing: 12,
+          //   children: List.generate(
+          //     30,
+          //     (index) => GestureDetector(
+          //       onTap: () => Get.to(() => TouristSpotDetails(),
+          //           transition: Transition.cupertino),
+          //       child: const SizedBox(
+          //         height: 300,
+          //         child: SpotCardWidget(),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

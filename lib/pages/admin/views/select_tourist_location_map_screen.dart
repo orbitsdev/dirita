@@ -233,6 +233,12 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
                         fontSize: 16,
                       ),
                     ),
+                    Text(
+                      '${controller.temporaryAddressInformation}',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(

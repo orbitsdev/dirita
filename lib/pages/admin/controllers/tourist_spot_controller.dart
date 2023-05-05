@@ -25,39 +25,31 @@ class TouristSpotController extends GetxController {
   var authcontroller = Get.find<AuthController>();
   var isCreating = false.obs;
   var isDeleting = false.obs;
+  var isUpdating = false.obs;
   var touristspot = TouristSpot().obs;
   var isRequesting = false.obs;
   var temporaryAddressInformation = GeoModel().obs;
 
-  
-  // use  to display all toruist 
-  final touristspotsStream =  touristspots.where('user_uid', isEqualTo: auth.currentUser!.uid).snapshots();
-  // late StreamSubscription touristspotsSubscription;
-  // final touristspotsStream = touristspots .where('user_uid', isEqualTo: auth.currentUser!.uid)
-  //     .snapshots();
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   touristspotsSubscription = touristspotsStream.listen((QuerySnapshot snapshot) {
-  //     // Handle the snapshot here
-  //   });
-  // }
+  final CollectionReference _touristSpotCollection =  FirebaseFirestore.instance.collection('touristspots');
+  var touristSpots = <TouristSpot>[].obs;
 
-  // @override
-  // void dispose() {
-  //   touristspotsSubscription.cancel();
-  //   super.dispose();
-  // }
-  
+  @override
+  void onInit() {
+    super.onInit();
+    fetchTouristSpots();
+  }
 
-  // @override
-  // void onClose() {
-  //   super.onClose();
-  //   touristspotsSubscription.cancel();
-  // }
+  void fetchTouristSpots() async {
+    final snapshot = await _touristSpotCollection.get();
+    final data = snapshot.docs
+        .map((doc) => TouristSpot.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
+    touristSpots(data);
+  }
 
   var suggestions = <dynamic>[].obs;
+  var tsuggestions = <TouristSpot>[].obs;
 
   void test({required BuildContext context}) {
     Modal.test(context: context);
@@ -91,6 +83,12 @@ class TouristSpotController extends GetxController {
     Modal.showErrorDialog(context: context, message: e.toString());
   }
 
+  void handleUpdateTouristError(BuildContext context, e) {
+    isUpdating(true);
+    update();
+    Modal.showErrorDialog(context: context, message: e.toString());
+  }
+
   void getLocationInformation(
       {required BuildContext context, required LatLng latlng}) async {
     try {
@@ -106,8 +104,6 @@ class TouristSpotController extends GetxController {
         formatted_address: data['formatted_address'],
         latitude: data['geometry']['location']['lat'],
         longitude: data['geometry']['location']['lng'],
-        compound_code: plus_code['compound_code'],
-        global_code: plus_code['global_code'],
       );
 
       temporaryAddressInformation(geodata);
@@ -131,6 +127,30 @@ class TouristSpotController extends GetxController {
     } else {
       suggestions([]);
     }
+  }
+
+  Future<void> searchTouristSpots(String query) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('touristspot')
+        .where('name', isGreaterThanOrEqualTo: query)
+        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+        .limit(10)
+        .get();
+
+    final results =
+        snapshot.docs.map((doc) => TouristSpot.fromMap(doc.data())).toList();
+    tsuggestions(results);
+  }
+
+  Future<void> fetchInitialTouristSPot() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('touristspot')
+        .limit(10)
+        .get();
+
+    final results =
+        snapshot.docs.map((doc) => TouristSpot.fromMap(doc.data())).toList();
+    tsuggestions(results);
   }
 
   Future<LatLng> fetchDetails(String place_id) async {
@@ -216,52 +236,184 @@ class TouristSpotController extends GetxController {
     }
   }
 
-
-
-
-Future<void> deleteTouristSpot({ required BuildContext context, required String id}) async {
-  try {
-    isDeleting(true);
-    update();
-    final touristSpotDoc = touristspots.doc(id);
-    final touristSpotData = await touristSpotDoc.get();
-    final coverImageUrl = touristSpotData.get('cover_image');
-    final featuredImageUrls = List<String>.from(touristSpotData.get('featured_image'));
-    await Future.wait([
-      FirebaseStorage.instance.refFromURL(coverImageUrl).delete(),
-      ...featuredImageUrls.map((url) => FirebaseStorage.instance.refFromURL(url).delete()),
-      touristSpotDoc.delete(),
-    ]);
-    isDeleting(false);
-    update();
-    Get.back();
-  } on FirebaseException catch (e) {
-    handleDeleteTourist(context, e);
-  } catch (e) {
-    handleDeleteTourist(context, e);
+  Future<void> deleteTouristSpot(
+      {required BuildContext context, required String id}) async {
+    try {
+      isDeleting(true);
+      update();
+      final touristSpotDoc = touristspots.doc(id);
+      final touristSpotData = await touristSpotDoc.get();
+      final coverImageUrl = touristSpotData.get('cover_image');
+      final featuredImageUrls =
+          List<String>.from(touristSpotData.get('featured_image'));
+      await Future.wait([
+        FirebaseStorage.instance.refFromURL(coverImageUrl).delete(),
+        ...featuredImageUrls
+            .map((url) => FirebaseStorage.instance.refFromURL(url).delete()),
+        touristSpotDoc.delete(),
+      ]);
+      isDeleting(false);
+      update();
+      Get.back();
+    } on FirebaseException catch (e) {
+      handleDeleteTourist(context, e);
+    } catch (e) {
+      handleDeleteTourist(context, e);
+    }
   }
-}
 
+  Future<void> updateTouristSpot(
+      {required BuildContext context,
+      required TouristSpot touristspot,
+      File? cover_image,
+      List<File>? featured_image,
+      List<String>? remove_featured}) async {
+    try {
+      isUpdating(true);
+      update();
+      final String id = touristspot.id as String;
 
-//    Future<void> deleteTouristSpot({ required BuildContext context,required String id}) async {
-//     try {
-//     isDeleting(true);
-//     update();
-//     final touristSpotDoc = touristspots.doc(id);
-//     final touristSpotData = await touristSpotDoc.get();
-// final coverImageUrl = touristSpotData.get('cover_image');
-// final featuredImageUrls = List<String>.from(touristSpotData.get('featured_image'));
-// await FirebaseStorage.instance.refFromURL(coverImageUrl).delete();
-// await Future.wait(featuredImageUrls.map((url) => FirebaseStorage.instance.refFromURL(url).delete()));
-// await touristSpotDoc.delete();
-//     isDeleting(false);
-//     update();
-    
-//     Get.back();
-//     } on FirebaseException catch (e) {
-//      handleDeleteTourist(context, e);
-//     } catch (e) {
-//      handleDeleteTourist(context, e);
-//     }
-//   }
+      // Update cover image if provided
+      if (cover_image != null) {
+        final String cover_image_url = await FileApi.uploadFile(
+            context: context,
+            folder: 'touristspot/coverimage/',
+            file_id: id,
+            filename: path.basename(cover_image.path),
+            file: cover_image);
+        final updated_cover_image = {'cover_image': cover_image_url};
+        touristspot = touristspot.copyWith(cover_image: cover_image_url);
+        await touristspots.doc(id).update(updated_cover_image);
+      }
+
+      // Update featured images
+      if (featured_image != null) {
+        // Upload new images
+        final new_upload_file_url =
+            await Future.wait(featured_image.map((file) async {
+          final file_uid = Uuid().v4();
+          final featued_image_url = await FileApi.uploadFile(
+            context: context,
+            folder: 'touristspot/featured_image/',
+            file_id: file_uid,
+            filename: path.basename(file.path),
+            file: file,
+          );
+          return featued_image_url;
+        }));
+
+        // Combine new and old images
+        final old_upload_file_url =
+            List<String>.from(touristspot.featured_image ?? []);
+        final updated_upload_file_url =
+            old_upload_file_url + new_upload_file_url;
+
+        // Remove images if provided
+        if (remove_featured != null) {
+          await Future.wait([
+            ...remove_featured.map((url) async {
+              await FirebaseStorage.instance.refFromURL(url).delete();
+            }),
+          ]);
+          // Remove removed images from updated list
+          updated_upload_file_url
+              .removeWhere((url) => remove_featured.contains(url));
+        }
+
+        final updated_featured_image = {
+          'featured_image': updated_upload_file_url
+        };
+        touristspot =
+            touristspot.copyWith(featured_image: updated_upload_file_url);
+        await touristspots.doc(id).update(updated_featured_image);
+      }
+
+      final updated_touristspot = touristspot.toMap();
+      await touristspots.doc(id).update(updated_touristspot);
+      isUpdating(false);
+      update();
+
+      Get.off(() => const AdminScreen());
+    } on FirebaseException catch (e) {
+      handleUpdateTouristError(context, e);
+    } on PlatformException catch (e) {
+      handleUpdateTouristError(context, e);
+    } catch (e) {
+      handleUpdateTouristError(context, e);
+    }
+  }
+
+  // Future<void> updateTouristSpot({
+  //   required BuildContext context,
+  //   required TouristSpot touristspot,
+  //   File? cover_image,
+  //   List<File>? featured_image,
+  //   List<String>? remove_featured,
+  // }) async {
+  //   try {
+
+  //     isUpdating(true);
+  //     update();
+  //     final String id = touristspot.id as String;
+
+  //     if (cover_image != null) {
+  //       final String cover_image_url = await FileApi.uploadFile(
+  //           context: context,
+  //           folder: 'touristspot/coverimage/',
+  //           file_id: id,
+  //           filename: path.basename(cover_image.path),
+  //           file: cover_image);
+  //       final updated_cover_image = {
+  //         'cover_image': cover_image_url,
+  //       };
+  //       touristspot = touristspot.copyWith(cover_image: cover_image_url);
+  //       await touristspots.doc(id).update(updated_cover_image);
+  //     }
+
+  //     List<String> new_upload_file_url = [];
+  //     if (featured_image != null) {
+  //       new_upload_file_url =  await Future.wait(featured_image.map((file) async {
+  //         final file_uid = Uuid().v4();
+  //         final featued_image_url = await FileApi.uploadFile(
+  //           context: context,
+  //           folder: 'touristspot/featured_image/',
+  //           file_id: file_uid,
+  //           filename: path.basename(file.path),
+  //           file: file,
+  //         );
+  //         return featued_image_url;
+  //       }));
+
+  //       if (remove_featured != null) {
+
+  //             await Future.wait([    ...remove_featured.map( (url)  async{
+
+  //               await FirebaseStorage.instance.refFromURL(url).delete();
+
+  //               // remove_feature contain url in fhe fires store, what iw want is  to delete also the url in the firsretore after deletinf in the  sotrage
+  //             }),
+
+  //         ]);
+  //       }
+
+  //       final updated_featured_image = {'featured_image': new_upload_file_url};
+  //       touristspot = touristspot.copyWith(
+  //           featured_image: List<String>.from(new_upload_file_url));
+  //            await touristspots.doc(id).update(updated_featured_image);
+  //     }
+
+  //     final updated_touristspot = touristspot.toMap();
+  //     await touristspots.doc(id).update(updated_touristspot);
+  //     isUpdating(false);
+  //     update();
+
+  //     Get.off(() => const AdminScreen());
+  //   } on FirebaseException catch (e) {
+  //     handleUpdateTouristError(context, e);
+  //   } on PlatformException catch (e) {
+  //     handleUpdateTouristError(context, e);
+  //   } catch (e) {
+  //     handleUpdateTouristError(context, e);
+  //   }
+  // }
 }

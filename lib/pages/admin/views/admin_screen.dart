@@ -3,6 +3,7 @@ import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/controllers/tourist_spot_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/create_tourist_spot_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/views/update_tourist_spot_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
@@ -92,10 +93,7 @@ class _AdminScreenState extends State<AdminScreen> {
             );
           } else {
             final data = snapshot.data!;
-            final touristspots = data.docs
-                .map((doc) =>
-                    TouristSpot.fromMap(doc.data() as Map<String, dynamic>))
-                .toList();
+            final touristspots = data.docs.map((doc) =>  TouristSpot.fromMap(doc.data() as Map<String, dynamic>)).toList();
             return ListView.builder(
               itemCount: touristspots.length,
               itemBuilder: (context, index) {
@@ -120,7 +118,8 @@ class _AdminScreenState extends State<AdminScreen> {
                     onSelected: (value) {
                       switch (value) {
                         case 'update':
-                          print('delete');
+
+                          Get.to(()=> UpdateTouristSpotScreen(touristspot:spot,));
 
                           return;
                         case 'delete':

@@ -1,4 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
+import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
+import 'package:dirita_tourist_spot_app/delegates/voice_flow_delegate.dart';
+import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
@@ -86,6 +90,37 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
      _speechToText.stop();
   }
 
+
+ Map<String, String> _selectedLanguage = {"name": "English", "code": "en"};
+ _onLanguageChanged(Map<String, String> language) { 
+    setState(() {
+      _selectedLanguage = language;
+    print(_selectedLanguage);
+     
+    });
+
+  }
+
+  void speakAllInformation(){
+      TextToSpeechController.speak('${widget.touristspot!.about_information}${widget.touristspot!.more_information}');
+                      Get.back();
+  }
+  void speakbasicInformation(){
+      TextToSpeechController.speak('${widget.touristspot!.about_information}');
+                      Get.back();
+  }
+
+  void selectInformation(BuildContext context) async {
+    
+    await TextToSpeechController.speak(VoiceAiSpeech.selectinformation);
+    if(widget.touristspot != null){
+    Modal.showInformationOptions(context: context, speakAllInformation: speakAllInformation, speakBasicInformation: speakbasicInformation, onLanguageChanged: _onLanguageChanged);
+
+    }
+
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +128,6 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
         slivers: [
           SliverAppBar(
             actions: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.tag)),
             ],
           ),
          
@@ -105,10 +139,10 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
           //       // If listening is active show the recognized words
           //       _speechToText.isListening
           //           ? '$_lastWords'
-          //           // If listening isn't active but could be tell the user
-          //           // how to start it, otherwise indicate that speech
-          //           // recognition is not yet ready or not supported on
-          //           // the target device
+                    // If listening isn't active but could be tell the user
+                    // how to start it, otherwise indicate that speech
+                    // recognition is not yet ready or not supported on
+                    // the target device
           //           : _speechEnabled
           //               ? 'Tap the microphone to start listening...'
           //               : 'Speech not available',
@@ -117,7 +151,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
           // ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -163,7 +197,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                             child: Padding(
                               padding: const EdgeInsets.only(right: 16.0),
                               child: CachedNetworkImage(
-                                imageUrl: sampleimage,
+                                imageUrl:widget.touristspot?.featured_image?[index] ?? sampleimage,
                                 placeholder: (context, url) =>
                                     Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,
@@ -193,22 +227,21 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                           );
                         },
                       ),
-                      // Positioned(
-                      //     bottom: 10,
-                      //     left: 10,
-                      //     child: Container(
-                      //       padding: EdgeInsets.all(8),
-                      //       decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(15),
-                      //         color: Colors.black.withOpacity(0.8),
-                      //       ),
-                      //       child: Center(
-                      //           child: Text(
-                      //         '1 / 25',
-                      //         style:
-                      //             TextStyle(color: Colors.white, fontSize: 16),
-                      //       )),
-                      //     )),
+                     if(widget.touristspot?.featured_image != null) Positioned(
+                          bottom: 10,
+                          left: 10,
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.black.withOpacity(0.8),
+                            ),
+                            child: Center(
+                                child: Text('${widget.touristspot?.featured_image?.length ?? 0}',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            )),
+                          )),
                     ]),
                   ),
                   const VSpace(20),
@@ -218,8 +251,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              Get.to(() => TouristSpotLocation(),
-                                  transition: Transition.cupertino);
+                              Get.to(() => TouristSpotLocation(touristspot: widget.touristspot,), transition: Transition.cupertino);
                             },
                             child: Row(
                               children: [
@@ -229,13 +261,13 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                                   color: AppTheme.ORANGE,
                                 ),
                                 HSpace(6),
-                                Flexible(child: Text(widget.touristspot?.formatted_address ?? 'Sultan Kudarat 237 VHX 086232'))
+                                Flexible(child: Text('${widget.touristspot?.formatted_address}'))
                               ],
                             )),
                       ]),
                   const VSpace(20),
                   Text(
-                    'About Balot Island',
+                    'About ${widget.touristspot!.famouse_name!.toUpperCase()}',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -243,7 +275,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                   ),
                   VSpace(16),
                   Text(
-                    'lorem asdasd ' * 20,
+                    '${widget.touristspot!.about_information}',
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w100,
@@ -260,35 +292,39 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             sliver: SliverToBoxAdapter(
                 child: Text(
-              'Possible Expenses',
+              'More Details',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             )),
           ),
-
+   const SVSpace(10),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             sliver: SliverToBoxAdapter(
-              child: Container(
-                height: 20,
-                child: Text(
-                    ' Keep in mind that below information might change in the future.  '),
-              ),
+              child: Text(
+                  '${widget.touristspot!.more_information}'),
             ),
           ),
-          const SVSpace(16),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                    childCount: 5, (context, index) => Text('Entrance 500'))),
-          ),
+
+          const SVSpace(30),
+
+          SliverToBoxAdapter(child: Container(
+            height: 30,),)
+
+        
+         
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:  textToSpeech
+      floatingActionButton: Builder(
+        builder: (context) {
+          return FloatingActionButton(
+            backgroundColor: Colors.white,
+            onPressed:  ()=> selectInformation(context),
+            child:  Icon(Icons.android),
+          );
+        }
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed:

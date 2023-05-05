@@ -1,6 +1,7 @@
 
 
 
+import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -36,9 +37,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
       if (!isLastIndex){
         _pagecontroler.nextPage(duration: const Duration(milliseconds: 600), curve: Curves.easeIn);
       }else{
-        print('hellow');
-       final prefs = await SharedPreferences.getInstance();
-        prefs.setBool('showOnBoarding', true);
+        SharedPreferencesManager.setShowOnBoarding(true);
         Get.off(()=> const HomeScreen());
       }
   }

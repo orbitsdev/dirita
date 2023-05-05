@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () => controller.isLoginLoading.value ? null :  _login(context),
                             child:  Center(
                               child: Text(
-                                'Login ${controller.isLoginLoading.value}',
+                                'Login',
                                 style: TextStyle(fontSize: 16),
                               ),
                             ),
