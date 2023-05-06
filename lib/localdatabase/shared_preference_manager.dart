@@ -33,4 +33,15 @@ class SharedPreferencesManager  {
   }
   
 
+ static final String _currentLanguage = 'currentLanguage';
+
+    static Future<String> getcurrentLanguage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_currentLanguage) ?? 'en';
+  }
+
+  static Future<bool> setcurrentLanguage(String value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString(_currentLanguage, value);
+  }
 }

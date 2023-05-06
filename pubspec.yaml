@@ -73,6 +73,8 @@ dependencies:
   country: ^2.0.9
   country_pickers: ^2.0.0
   language_picker: ^0.4.3
+  timeago: ^3.3.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

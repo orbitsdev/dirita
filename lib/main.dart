@@ -16,6 +16,7 @@ import 'package:dirita_tourist_spot_app/tl.test.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +53,7 @@ Widget authscreenlogic() {
 
 
   // return TlTest();
-  // return AdminScreen();
+  // return LoginScreen();
 
   if(widget.showOnBoarding == false) {
     return const BoardingScreen();
@@ -115,7 +116,7 @@ Widget authscreenlogic() {
       theme: ThemeData(
         colorSchemeSeed: AppTheme.ORANGE,
         useMaterial3: true,
-        textTheme: AppTheme.CUSTOM_TEXT_THEME,
+        textTheme:AppTheme.CUSTOM_TEXT_THEME,
       ),
       debugShowCheckedModeBanner: false,
       home: authscreenlogic(),

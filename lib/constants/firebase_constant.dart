@@ -15,3 +15,4 @@ var storage = FirebaseStorage.instance;
 //fires store
 var touristspots =   firestore.collection('touristspot');
 var users =   firestore.collection('users');
+var posts =   firestore.collection('posts');

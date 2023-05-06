@@ -2,6 +2,7 @@
 
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -116,11 +117,11 @@ class AppTheme {
 
 static  TextTheme CUSTOM_TEXT_THEME = TextTheme(
          
-      headline1: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 24),
-      headline2: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 22),
-      headline3: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 20),
-      bodyText1: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 16),
-      bodyText2: TextStyle(color: AppTheme.FONT, fontFamily: 'Anton-Regular', fontSize: 14),
+      // headline1:CupertinoTheme.of(context).textTheme.textStyle,
+      // headline2:CupertinoTheme.of(context).textTheme.textStyle,
+      // headline3:CupertinoTheme.of(context).textTheme.textStyle,
+      // bodyText1:CupertinoTheme.of(context).textTheme.textStyle,
+      // bodyText2:CupertinoTheme.of(context).textTheme.textStyle,
   
    );
 

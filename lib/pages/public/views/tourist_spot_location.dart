@@ -6,7 +6,9 @@
 
 import 'dart:async';
 
+import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/rounded_card_widget.dart';
+import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:geolocator/geolocator.dart';
@@ -176,23 +178,74 @@ class _TouristSpotLocationState extends State<TouristSpotLocation> {
         ),
 
         Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
+            bottom: 16,
+            right: 14,
+            left: 14,
             child:Container(
-              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                   color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
              constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height * 0.30,
+              maxHeight:MediaQuery.of(context).size.height * 0.20 ,
+              minHeight: MediaQuery.of(context).size.height * 0.20,
              ),
-              color: Colors.white,
-              child: Column(
-                children: [
-                  Text('Instructions '),
-                  Text('To check the nearest routes clieck the marker and select your desire options'),
-                ],
+           
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // SizedBox(
+                          //   height: 34,
+                          //   width: 34,
+                          //   child: IconButton(style:ElevatedButton.styleFrom(backgroundColor: Colors.grey.shade100), onPressed: (){}, icon: Center(child: Icon(Icons.arrow_back_ios_new,size:  16,  color: Colors.grey.shade600,)))),
+                          
+                          Text('Location', style: TextStyle(),),
+                          Container(
+                            height: 34,
+                          )
+                          // SizedBox(
+                          //   height: 34,
+                          //   width: 34,
+                          //   child: IconButton(
+                          //     style:ElevatedButton.styleFrom(backgroundColor: Colors.grey.shade100), onPressed: (){}, 
+                          //     icon: Center(child: Icon(Icons.close,size:  20,  color: Colors.grey.shade600,
+                          //     ),
+                          //     ),
+                          //     ),
+                          //     ),
+                          
+                        ],
+                      ),
+                      Divider(
+                          color: Colors.grey.shade200,
+                          ),
+                        Column(
+                          children: [
+                                    VSpace(10),
+
+                                    GestureDetector(
+                                      onTap: ()=> widget.touristspot?.formatted_address != null ? moveCamera(LatLng(widget.touristspot?.latitude as double, widget.touristspot?.longtitude as double) )  :null  ,
+                                      child: Text('${widget.touristspot!.formatted_address}')),
+
+                          
+                          ],
+                        ),
+                        
+                    VSpace(10),
+                  Text('For Realtime Navigation, Click the marker the marker and click blue path',style: TextStyle(fontSize: 14),)
+
+                  ],
+                ),
               ),
               
-            ).animate().moveY(end: 0, begin: 200 ) ,
+            ).animate().scale(duration: Duration(milliseconds: 400), curve: Curves.easeInOut),
+
+
           ),
         ],
       ),

@@ -567,7 +567,7 @@ class _UpdateTouristSpotScreenState extends State<UpdateTouristSpotScreen> {
                   ),
                   const VSpace(10),
                   GetBuilder<TouristSpotController>(
-                    builder: (controller) => SizedBox(
+                    builder: (controller) =>  controller.isUpdating.value ? Center(child: LoaderWidget(),) : SizedBox(
                       height: 50,
                       width: double.infinity,
                       child: TextButton(

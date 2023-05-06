@@ -1,7 +1,10 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
+import 'package:dirita_tourist_spot_app/models/post.dart';
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/login_screen_widget.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/create_tourist_post.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/update_tourist_post.dart';
 import 'package:dirita_tourist_spot_app/tydef.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/widgets/language_dropdown.dart';
@@ -14,7 +17,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Modal {
-  static void showBottomSheet(BuildContext context) {
+  static void showLoginBottomSheet(BuildContext context) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -211,7 +214,7 @@ class Modal {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+        gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.green,
         textColor: Colors.white,
@@ -278,7 +281,7 @@ class Modal {
   }
 
 
-  static void showInformationOptions({required BuildContext context, required languageSpeak speakAllInformation, required languageSpeak speakBasicInformation, required LanguageSelectionCallback onLanguageChanged}) {
+  static void showInformationOptions({required BuildContext context, required languageSpeak speakAllInformation, required languageSpeak speakBasicInformation, }) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -331,10 +334,7 @@ class Modal {
                   
             
                 // LanguageDropdown(onChanged: onLanguageChanged),
-               LanguageSelector(
-                initialValue: 'tl',
-                onLanguageChanged: (code) => onLanguageChanged(code),
-               ),
+              
                 // LoaderWidget(),
                 TextButton(onPressed: ()=> speakAllInformation(context), child: Text('All Information',style: TextStyle(color: Colors.black) ,)),
                 TextButton(onPressed: ()=> speakBasicInformation(context), child: Text('Basic Information', style: TextStyle(color: Colors.black)),),
@@ -348,5 +348,43 @@ class Modal {
         );
       },
     );
+  }
+
+  static void showCreatePost({required BuildContext context,  required TouristSpot spot, }){
+      
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Container(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.55,
+                ),
+                child:  CreateTouristPost(spot: spot,),
+              ),
+            ));
+
+  }
+
+  static void showUpdatePost({required BuildContext context,  required TouristSpot spot, required Post post}){
+      
+      showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Container(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.55,
+                ),
+                child:  UpdateTouristPost(spot: spot, post: post,),
+              ),
+            ));
+
   }
 }

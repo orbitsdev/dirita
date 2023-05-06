@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _speakWelcomeMessage();
+    // _speakWelcomeMessage();
   }
 
   @override
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (auth.currentUser == null)
             GetBuilder<AuthController>(
               builder: (controller) => TextButton(
-                onPressed: () => Modal.showBottomSheet(context),
+                onPressed: () => Modal.showLoginBottomSheet(context),
                 child: Text(
                   'Signin',
                   style: Theme.of(context).textTheme.displaySmall!.copyWith(
