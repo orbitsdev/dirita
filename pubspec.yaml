@@ -75,6 +75,15 @@ dependencies:
   language_picker: ^0.4.3
   timeago: ^3.3.0
   intl: ^0.17.0
+  flutter_polyline_points: ^1.0.0
+  flutter_native_splash: ^2.2.19
+
+flutter_native_splash:
+  android: true
+
+  color: "#080808"
+  image: "assets/images/dirita_logo.png"
+
 
 dev_dependencies:
   flutter_test:

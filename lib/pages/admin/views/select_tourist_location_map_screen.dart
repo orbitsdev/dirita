@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -97,7 +96,7 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
   }
 
   void moveCamera(LatLng latlng){
- CameraPosition cameraposition = CameraPosition( target: latlng, zoom: 16.999, bearing: -1000);
+  CameraPosition cameraposition = CameraPosition( target: latlng, zoom: 16.999, bearing: -1000);
     _newGoogleMapController .animateCamera(CameraUpdate.newCameraPosition(cameraposition));
   }
 

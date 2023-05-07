@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
+import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
 import 'package:dirita_tourist_spot_app/delegates/sticky_header_delegate.dart';
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
+import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/sv_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +25,20 @@ class TouristScreen extends StatefulWidget {
 }
 
 class _TouristScreenState extends State<TouristScreen> {
+
+
+    
+  @override
+  void initState() {
+    super.initState();
+
+
+
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -58,7 +75,7 @@ StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SliverFillRemaining(
             child: Center(
-              child: CircularProgressIndicator(),
+              child: LoaderWidget(color: AppTheme.ORANGE,),
             ),
           );
         }
@@ -73,8 +90,10 @@ StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             
 
             return GestureDetector(
-              onTap: () => Get.to(() => TouristSpotDetails(touristspot:spot),
-                  transition: Transition.cupertino),
+              onTap: () {
+                Get.to(() => TouristSpotDetails(touristspot:spot), transition: Transition.cupertino);
+                TextToSpeechController.speak(VoiceAiSpeech.selectLanguage);
+              },
               child: SizedBox(
                 height: 300,
                 child: SpotCardWidget(touristspot:spot),

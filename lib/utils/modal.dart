@@ -387,4 +387,35 @@ class Modal {
             ));
 
   }
+   static Future<String?>  showProfileUpdateModal(BuildContext context) {
+   return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('Update Profile Photo'),
+                onTap: () {
+                  // Handle update profile photo action
+                   Get.back(result: 'update_photo');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('Update Profile Details'),
+                onTap: () {
+                  // Handle update profile details action
+                    Get.back(result: 'update_details');
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
 }

@@ -2,6 +2,7 @@
 
 
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
+import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/login_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/asset.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../utils/app_theme.dart';
 
@@ -44,6 +46,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final _focusScopeNode = FocusScopeNode();
 
+  bool obscure = false;
+
   @override
   void dispose() {
 
@@ -74,6 +78,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,27 +104,30 @@ class _SignupScreenState extends State<SignupScreen> {
                       width: 90,
                       child: Image.asset(Asset.imagePath('dirita_logo.png'))),
                 ),
-                   const VSpace(10),
-                Text(
-                  'Signup to DIRIKITA',
-                  style: Theme.of(context).textTheme.displayLarge!.copyWith(),
-                  textAlign: TextAlign.center,
-                ),
-                 const VSpace(10),
-                Text(
-                  'as',
-                  style: Theme.of(context).textTheme.displayLarge!.copyWith(),
-                  textAlign: TextAlign.center,
-                ),
-                 const VSpace(10),
-                Text(
-                  '${widget.name ?? 'tourist'}'.toUpperCase(),
-                  style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                    fontSize: 24,
-                    color: AppTheme.ORANGE
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+             Text(
+            'Signup to',
+            style: GoogleFonts.montserrat(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          Text(
+            'DIRIKITA',
+            style: GoogleFonts.montserrat(
+              fontSize: 48.0,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
+            ),
+          ),
+          Text(
+            'As ${widget.name}'.toUpperCase(),
+            style: GoogleFonts.montserrat(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),  
                 const VSpace(20),
                  TextFormField(
                   decoration: const InputDecoration(
@@ -173,7 +181,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const VSpace(10),
                 TextFormField(
-                  obscureText: true,
+                  obscureText: !obscure,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 14, horizontal: 10),
@@ -189,12 +197,36 @@ class _SignupScreenState extends State<SignupScreen> {
                     return null;
                   },
                 ),
-                const VSpace(24),
+                const VSpace(10),
+                Row(
+  children: [
+    SizedBox(
+      width:24,
+      height:24,
+      child: Checkbox(
+        value: obscure,
+        onChanged: (newValue) {
+          setState(() {
+            obscure = newValue!;
+          });
+        },
+        activeColor: AppTheme.ORANGE, // Set the active color to AppTheme.ORANGE
+      ),
+    ),
+    HSpace(6),
+    Text(
+      'Show Password',
+      style: TextStyle(
+        color: AppTheme.ORANGE, // Set the text color to AppTheme.ORANGE
+      ),
+    ),
+  ],
+),
+                const VSpace(16),
                 GetBuilder<AuthController>(
                   
                   builder: (controller)=> SizedBox( 
                     width: double.infinity,
-                    height: 50,
                     child: Builder(
                       builder: (context) {
                         return ElevatedButton(
@@ -214,7 +246,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
-                const VSpace(20),
+                const VSpace(16),
                 RichText(
                   text: TextSpan(
                     children: [

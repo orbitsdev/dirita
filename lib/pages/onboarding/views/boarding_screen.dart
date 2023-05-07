@@ -111,7 +111,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
                 ),
               ),
                VSpace(MediaQuery.of(context).size.height * 0.05),
-                SizedBox( width:double.infinity,height:60,child: ElevatedButton(onPressed: next, child: Text( isLastIndex ? 'Get Started'.toUpperCase() :'NEXT'.toUpperCase(), style:  const TextStyle(fontSize: 20,fontWeight: FontWeight.bold,  color: AppTheme.ORANGE),)
+                SizedBox( width:double.infinity,child: ElevatedButton(onPressed: next, child: Text( isLastIndex ? 'Get Started'.toUpperCase() :'NEXT'.toUpperCase(), style:  const TextStyle(fontSize: 20,fontWeight: FontWeight.bold,  color: AppTheme.ORANGE),)
                 )
                 ).animate().fadeIn(),
               ],

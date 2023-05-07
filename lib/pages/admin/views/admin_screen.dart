@@ -5,8 +5,10 @@ import 'package:dirita_tourist_spot_app/pages/admin/controllers/tourist_spot_con
 import 'package:dirita_tourist_spot_app/pages/admin/views/create_tourist_spot_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/update_tourist_spot_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/profile_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
+import 'package:dirita_tourist_spot_app/utils/asset.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
@@ -69,16 +71,37 @@ class _AdminScreenState extends State<AdminScreen> {
       endDrawer: Drawer(
         child: SafeArea(
           child: ListView(children: [
-            ListTile(
-                onTap: () => authcontroller.logout(context),
-                leading: Icon(
-                  Icons.logout,
-                  color: AppTheme.FONT,
-                ),
-                title: Text(
-                  'Logout',
-                  style: TextStyle(fontSize: 18, color: AppTheme.FONT),
-                )),
+            Container(
+                  height: 100,
+                  color: AppTheme.ORANGE,
+                  padding: EdgeInsets.all(10),
+                  child: Image.asset(Asset.imagePath('dirita_logo.png')),),
+              HSpace(40),
+              if (auth.currentUser != null)
+                ListTile(
+                    onTap: () => authcontroller.logout(context),
+                    leading: Icon(
+                      Icons.logout,
+                      color: AppTheme.FONT,
+                    ),
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(fontSize: 18, color: AppTheme.FONT),
+                    )),
+              if (auth.currentUser != null)
+                ListTile(
+                    onTap: (){
+                     
+                      Get.to(()=> ProfileScreen());
+                    },
+                    leading: Icon(
+                      Icons.person_2_outlined,
+                      color: AppTheme.FONT,
+                    ),
+                    title: Text(
+                      'Profile',
+                      style: TextStyle(fontSize: 18, color: AppTheme.FONT),
+                    )),
           ]),
         ),
       ),

@@ -87,7 +87,7 @@ class PostCardWidget extends StatelessWidget {
               ],
             ),
           ),
-         if(auth.currentUser!.uid  == post.uid )PopupMenuButton<String>(
+         if(auth.currentUser!= null &&  auth.currentUser!.uid == post.uid )PopupMenuButton<String>(
           surfaceTintColor: Colors.white,
             onSelected: (value) {
               if (value == 'update') {  
@@ -110,7 +110,7 @@ class PostCardWidget extends StatelessWidget {
           ),
         ],
       ),
-      SizedBox(height: 16),
+      SizedBox(height: 10),
       Text(
         '${post.caption}',
         style: TextStyle(fontSize: 16),

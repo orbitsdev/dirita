@@ -53,7 +53,8 @@ class SpotCardWidget extends StatelessWidget {
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
 
-          Positioned(child: Container(
+          Positioned(
+            child: Container(
             height: 40,
             decoration: BoxDecoration(
                             
@@ -87,12 +88,9 @@ class SpotCardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(15),
                     bottomLeft: Radius.circular(15)),
-                color: AppTheme.ORANGE,
+              
               ),
-              child: Center(
-                  child: Text('4.9',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.amber[200], fontSize: 12))),
-            ),
+              child:  Icon(Icons.star, color: Colors.amber[300], size: 24,),)
           ),
         ],
       ),

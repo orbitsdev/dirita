@@ -40,6 +40,17 @@ static Future<Response<dynamic>> placeDetailsRequest(String place_id) async
      
 }   
 
+static Future<Response<dynamic>> getDirectionRequest({required LatLng origin, required LatLng destination ,String? mode ='driving '}) async 
+{
+
+
+     final response = await dio.get('https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&mode=${mode}&key=${GOOGLE_MAP_API_KEY}');
+     return response;
+     
+}   
+
+
+
 
 
 

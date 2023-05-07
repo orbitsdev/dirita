@@ -10,10 +10,13 @@ import 'package:dirita_tourist_spot_app/pages/auth/views/signup_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/current_location_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/home_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/profile_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_location.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/update_profile_screen.dart';
 import 'package:dirita_tourist_spot_app/tl.test.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
+import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +27,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/admin/views/create_tourist_spot_screen.dart';
 import 'pages/auth/views/account_selection_screen.dart';
 import 'pages/onboarding/views/boarding_screen.dart';
+import 'pages/public/views/tourist_all_shared_post.screen.dart';
 
 
 Future<void> main() async {
@@ -50,10 +54,7 @@ class _DiritaAppState extends State<DiritaApp> {
 final authcontroller = Get.find<AuthController>();
 Widget authscreenlogic() {
 
-
-
-  // return TlTest();
-  // return LoginScreen();
+ 
 
   if(widget.showOnBoarding == false) {
     return const BoardingScreen();
@@ -64,7 +65,7 @@ Widget authscreenlogic() {
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Return a loading indicator if the stream is still waiting for data
-            return const Center(child: CircularProgressIndicator());
+            return  Center(child: LoaderWidget());
           } else {
             if (snapshot.hasData) {
               // User is signed in
@@ -79,7 +80,7 @@ Widget authscreenlogic() {
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       // Return a loading indicator if the future is still waiting for data
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: LoaderWidget());
                     } else {
                       final userData = snapshot.data?.data() as Map<String, dynamic>?;
                        authcontroller.getUserDetails(uid);
@@ -135,6 +136,9 @@ Widget authscreenlogic() {
         GetPage(name: '/admin/create-tourist-spot', page: () => CreateTouristSpotScreen(), transition: Transition.cupertino),
         GetPage(name: '/admin/select-tourist-spot-location', page: () => SelectTouristLocationSpotScreen(), transition: Transition.cupertino),
         GetPage(name: '/admin/update-tourist-spot', page: () => UpdateTouristSpotScreen(), transition: Transition.cupertino),
+        GetPage(name: '/shared-post', page: () => TouristAllSharedPostScreen(), transition: Transition.cupertino),
+        GetPage(name: '/profile', page: () => ProfileScreen(), transition: Transition.cupertino),
+        GetPage(name: '/profile/update', page: () => UpdateProfileScreen(), transition: Transition.cupertino),
       ],
     );
   }

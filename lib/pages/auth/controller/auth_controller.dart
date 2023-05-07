@@ -13,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -165,6 +166,17 @@ void loginWithEmailAndPassword({
       Get.offAll(()=> LoginScreen());
   }
 
+
+
+
+
+Future<void> updateUser() async {
+
+      String uid = auth.currentUser!.uid;
+      final userdetails =  await users.doc(uid).get();
+      user(UserAccount.fromMap(userdetails.data() as Map<String,dynamic>));
+      update();
+}
 
 
 }

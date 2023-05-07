@@ -2,10 +2,12 @@ import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.da
 import 'package:dirita_tourist_spot_app/pages/auth/views/account_selection_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/utils/asset.dart';
+import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreenWidget extends StatefulWidget {
   const LoginScreenWidget({Key? key}) : super(key: key);
@@ -24,6 +26,9 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
   final _key = GlobalKey<FormState>();
 
   final _focusScopeNode = FocusScopeNode();
+
+    bool obscure = false;
+
 
   @override
   void initState() {
@@ -82,12 +87,24 @@ _passwordFocusNode = FocusNode();
                     child: Image.asset(Asset.imagePath('dirita_logo.png')),
                   ),
                 ),
-                const VSpace(6),
-                Text(
-                  'Signup to DIRIKITA',
-                  style: Theme.of(context).textTheme.displayLarge!.copyWith(),
-                ),
-                const VSpace(20),
+                   const VSpace(10),
+                   Text(
+            'Signin to',
+            style: GoogleFonts.montserrat(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          Text(
+            'DIRIKITA',
+            style: GoogleFonts.montserrat(
+              fontSize: 48.0,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
+            ),
+          ),
+                  const VSpace(20),
                 TextFormField(
                   decoration:  InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 10),
@@ -105,7 +122,7 @@ _passwordFocusNode = FocusNode();
                 ),
                 const VSpace(10),
                 TextFormField(
-                  obscureText: true,
+                  obscureText: !obscure,
                   decoration:  InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 10),
                     border: OutlineInputBorder(),
@@ -120,11 +137,36 @@ _passwordFocusNode = FocusNode();
                     return null;
                   },
                 ),
-                const VSpace(24),
+                                  const VSpace(16),
+
+                 Row(
+  children: [
+    SizedBox(
+      width:24,
+      height:24,
+      child: Checkbox(
+        value: obscure,
+        onChanged: (newValue) {
+          setState(() {
+            obscure = newValue!;
+          });
+        },
+        activeColor: AppTheme.ORANGE, // Set the active color to AppTheme.ORANGE
+      ),
+    ),
+    HSpace(6),
+    Text(
+      'Show Password',
+      style: TextStyle(
+        color: AppTheme.ORANGE, // Set the text color to AppTheme.ORANGE
+      ),
+    ),
+  ],
+),
+                                  const VSpace(16),
                 GetBuilder<AuthController>(builder: (controller) {
                   return SizedBox(
                     width: double.infinity,
-                    height: 50,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.ORANGE,
@@ -141,7 +183,7 @@ _passwordFocusNode = FocusNode();
                     ),
                   );
                 }),
-                const VSpace(20),
+                const VSpace(16),
                 RichText(
                   text: TextSpan(
                     children: [

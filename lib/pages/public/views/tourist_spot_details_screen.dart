@@ -6,6 +6,7 @@ import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
 import 'package:dirita_tourist_spot_app/delegates/voice_flow_delegate.dart';
 import 'package:dirita_tourist_spot_app/models/post.dart';
 import 'package:dirita_tourist_spot_app/models/user_account.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/tourist_all_shared_post.screen.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:dirita_tourist_spot_app/widgets/language_selector.dart';
 import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
@@ -87,6 +88,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
   void changeDetailsInformation() async {
     setIsTranslating(true);
 
+    // TextToSpeechController.speak(VoiceAiSpeech.translating);
     String transalated_about =
         await TextToSpeechController.convertMessageToSelectedLanguage(
             code: language_code,
@@ -293,11 +295,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                   VSpace(16),
                   Text(
                     '${widget.touristspot!.about_information}',
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w100,
-                          color: Colors.grey[700],
-                        ),
+                   
                   ),
                   SizedBox(height: 10),
                 ],
@@ -397,41 +395,82 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
     }
 
     // Data is available, so we can build the list of posts
-    return Wrap(
-      children: snapshot.data!.docs.map((doc) {
-        final postData = doc.data() as Map<String, dynamic>;
+    return Column(
+      children: [
+        Wrap(
+          children: snapshot.data!.docs.map((doc) {
+            final postData = doc.data() as Map<String, dynamic>;
 
-        // Extract the post data
-        final post = Post.fromMap(postData);
-        final userId = post.uid;
+            // Extract the post data
+            final post = Post.fromMap(postData);
+            final userId = post.uid;
 
-        // Return a FutureBuilder to fetch the user data
-        return FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance
-              .collection('users')
-              .doc(userId)
-              .get(),
-          builder: (context, userSnapshot) {
-            if (userSnapshot.connectionState == ConnectionState.waiting) {
-              return PostCardShimmer();
-            }
+            // Return a FutureBuilder to fetch the user data
+            return FutureBuilder<DocumentSnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userId)
+                  .get(),
+              builder: (context, userSnapshot) {
+                if (userSnapshot.connectionState == ConnectionState.waiting) {
+                  return PostCardShimmer();
+                }
 
-            if (userSnapshot.hasError) {
-              return Text('Error: ${userSnapshot.error}');
-            }
+                if (userSnapshot.hasError) {
+                  return Text('Error: ${userSnapshot.error}');
+                }
 
-            if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-              return Container();
-            }
+                if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
+                  return Container();
+                }
 
-            // User data is available, so we can build the PostCardWidget
-            final userData = userSnapshot.data!.data() as Map<String, dynamic>;
-            final user = UserAccount.fromMap(userData);
+                // User data is available, so we can build the PostCardWidget
+                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                final user = UserAccount.fromMap(userData);
 
-            return PostCardWidget(post: post, user: user, spot: widget.touristspot as TouristSpot,  bottom: 10,);
-          },
-        );
-      }).toList(),
+                return  PostCardWidget(post: post, user: user, spot: widget.touristspot as TouristSpot,  bottom: 10,);
+              },
+            );
+          }).toList(),
+        ),
+
+
+if( snapshot.data!.docs.length >0)VSpace(20),
+if( snapshot.data!.docs.length >0)SizedBox(
+  width: double.infinity,
+  child:   ElevatedButton(
+  
+    onPressed: () => Get.to(()=> TouristAllSharedPostScreen(spot:  widget.touristspot,)),
+  
+    style: ElevatedButton.styleFrom(
+  
+      shape: RoundedRectangleBorder(
+  
+        borderRadius: BorderRadius.circular(8),
+  
+        side: BorderSide(color: AppTheme.ORANGE),
+  
+      ),
+  
+    ),
+  
+    child: Text(
+  
+      'Show More',
+  
+      style: TextStyle(
+  
+        color: AppTheme.ORANGE,
+  
+        fontSize: 16,
+  
+      ),
+  
+    ),
+  
+  ),
+)
+      ],
     );
   },
 ),
