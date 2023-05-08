@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dirita_tourist_spot_app/api/google_map_api.dart';
 import 'package:dirita_tourist_spot_app/models/Direction.dart';
 import 'package:dirita_tourist_spot_app/models/geo_model.dart';
+import 'package:dirita_tourist_spot_app/models/place_details.dart';
 import 'package:dirita_tourist_spot_app/pages/public/controller/geolocation_controller.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class LocationController extends GetxController {
   var isLoading = false.obs;
   var isGenerating = false.obs;
-  var currentLocationDetails = GeoModel().obs;
+  var currentLocationDetails = PlaceDetails().obs;
 
   void handleError(BuildContext context, e) {
     isGenerating(false);
@@ -22,26 +23,30 @@ class LocationController extends GetxController {
     Modal.showErrorDialog(context: context, message: e.toString());
   }
 
-  Future<GeoModel> getCurrentLocationDetails(LatLng latlng) async {
+  Future<PlaceDetails> getCurrentLocationDetails(LatLng latlng) async {
     try {
       isLoading(true);
       update();
+    
       final response = await GoogleMapApi.geoRequest(latlng);
-      final data = response.data['results'][0];
-      final plus_code = response.data['plus_code'];
+      final placeId = response.data['results'][0]['place_id'];
+     
+      final results =  await GoogleMapApi.placeDetailsRequest(placeId);
+      final resuldata = results.data['result'];
+        PlaceDetails new_place_details = PlaceDetails(
+        
+        formatted_address: resuldata['formatted_address'],
+        place_name: resuldata['name'],
+         place_id: resuldata['place_id'], 
+         latitude: resuldata['geometry']['location']['lat'],
+         longitude: resuldata['geometry']['location']['lng']
+          );
 
-      GeoModel geodata = GeoModel(
-        place_id: data['place_id'],
-        formatted_address: data['formatted_address'],
-        latitude: data['geometry']['location']['lat'],
-        longitude: data['geometry']['location']['lng'],
-      );
-
-      currentLocationDetails(geodata);
+      currentLocationDetails(new_place_details);
       isLoading(false);
       update();
 
-      return GeoModel();
+      return new_place_details;
     } catch (e) {
       Modal.toast(message: e.toString());
       isLoading(false);

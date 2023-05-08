@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dirita_tourist_spot_app/models/place_details.dart';
 import 'package:dirita_tourist_spot_app/utils/asset.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,7 @@ class _UpdateTouristSpotScreenState extends State<UpdateTouristSpotScreen> {
   late TextEditingController _aboutController;
   late TextEditingController _moreController;
 
-  GeoModel? selectedLocation;
+  PlaceDetails? selectedLocation;
 
   late FocusNode _nameFucusNode;
   late FocusNode _shortNameFucusNode;
@@ -66,7 +67,7 @@ class _UpdateTouristSpotScreenState extends State<UpdateTouristSpotScreen> {
         text: widget.touristspot?.about_information ?? '');
     _moreController =
         TextEditingController(text: widget.touristspot?.more_information ?? '');
-    selectedLocation = GeoModel(
+    selectedLocation = PlaceDetails(
       place_id: widget.touristspot?.place_id ?? '',
       formatted_address: widget.touristspot?.formatted_address ?? '',
       latitude: widget.touristspot?.latitude,
@@ -157,7 +158,7 @@ class _UpdateTouristSpotScreenState extends State<UpdateTouristSpotScreen> {
 
       TouristSpot updated_value_toursit_spot = widget.touristspot!.copyWith(
 
-        name: _nameController.text.trim(),
+        name: _nameController.text.trim().toLowerCase(),
         famouse_name: _shortNameController.text.trim(),
         about_information: _aboutController.text.trim(),
         more_information: _moreController.text.trim(),
@@ -307,7 +308,7 @@ class _UpdateTouristSpotScreenState extends State<UpdateTouristSpotScreen> {
                   SizedBox(height: 8.0),
                   InkWell(
                     onTap: () async {
-                      GeoModel response = await Get.to(() =>
+                      PlaceDetails response = await Get.to(() =>
                           SelectTouristLocationSpotScreen(
                               selectedLocation: selectedLocation));
 

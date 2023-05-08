@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/binding/app_binding.dart';
 import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/admin_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/views/privacy_and_policy.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/select_tourist_location_map_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/settings_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/views/terms_and_condtion.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/update_tourist_spot_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/login_screen.dart';
@@ -35,8 +37,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   AppBindings().dependencies();
- 
-  
+
+
   final showOnBoarding = await SharedPreferencesManager.getShowOnBoarding();
   runApp( DiritaApp(showOnBoarding:showOnBoarding ,));
 }
@@ -51,12 +53,15 @@ class DiritaApp extends StatefulWidget {
 }
 
 class _DiritaAppState extends State<DiritaApp> {
-  
+
 final authcontroller = Get.find<AuthController>();
 Widget authscreenlogic() {
 
+  // return BoardingScreen();
 
- 
+    // return PrivacyAndPolicy();
+    // return TermsAndCondition();
+
 
   if(widget.showOnBoarding == false) {
     return const BoardingScreen();
@@ -97,7 +102,7 @@ Widget authscreenlogic() {
                 );
               }
             } else {
-             
+
               // User is signed out
               return HomeScreen();
             //  return CurrentLocationScreen();
@@ -142,6 +147,8 @@ Widget authscreenlogic() {
         GetPage(name: '/profile', page: () => ProfileScreen(), transition: Transition.cupertino),
         GetPage(name: '/profile/update', page: () => UpdateProfileScreen(), transition: Transition.cupertino),
         GetPage(name: '/settings', page: () => SettingsScreen(), transition: Transition.cupertino),
+        GetPage(name: '/privacy-and-polcy', page: () => PrivacyAndPolicy(), transition: Transition.cupertino),
+        GetPage(name: '/terms-and-condition', page: () => TermsAndCondition(), transition: Transition.cupertino),
       ],
     );
   }

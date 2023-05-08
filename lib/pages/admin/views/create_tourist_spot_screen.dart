@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dirita_tourist_spot_app/models/geo_model.dart';
+import 'package:dirita_tourist_spot_app/models/place_details.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/controllers/tourist_spot_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/select_tourist_location_map_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
@@ -29,7 +30,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
   late TextEditingController _aboutController;
   late TextEditingController _moreController;
 
-  GeoModel? selectedLocation;
+  PlaceDetails? selectedLocation;
 
   late FocusNode _nameFucusNode;
   late FocusNode _shortNameFucusNode;
@@ -249,7 +250,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                   SizedBox(height: 8.0),
                   InkWell(
                     onTap: () async {
-                      GeoModel response = await Get.to(() => SelectTouristLocationSpotScreen( selectedLocation: selectedLocation));
+                      PlaceDetails response = await Get.to(() => SelectTouristLocationSpotScreen( selectedLocation: selectedLocation));
 
                       if (response != null) {
                         setState(() {

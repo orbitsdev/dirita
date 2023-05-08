@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dirita_tourist_spot_app/models/place_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,7 +21,7 @@ import '../../../utils/app_theme.dart';
 
 class SelectTouristLocationSpotScreen extends StatefulWidget {
 
-  GeoModel? selectedLocation;
+  PlaceDetails? selectedLocation;
    SelectTouristLocationSpotScreen({
     Key? key,
     this.selectedLocation,
@@ -135,8 +136,8 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
 
       LatLng latLng = LatLng(widget.selectedLocation!.latitude as double  ,  widget.selectedLocation!.longitude as double);
         setLocation(latLng);
-    }else if(touristController.temporaryAddressInformation.value.formatted_address != null ){
-        LatLng latLng = LatLng(touristController.temporaryAddressInformation.value.latitude as double  ,  touristController.temporaryAddressInformation.value.longitude as double);
+    }else if(touristController.tempPlaceDetails.value.formatted_address != null ){
+        LatLng latLng = LatLng(touristController.tempPlaceDetails.value.latitude as double  ,  touristController.tempPlaceDetails.value.longitude as double);
         setLocation(latLng);
     }
     
@@ -155,12 +156,12 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
         leading: IconButton(  
             onPressed: () { 
 
-                if( widget.selectedLocation != null && widget.selectedLocation!.formatted_address != null  && touristController.temporaryAddressInformation.value.formatted_address != null){
+                if( widget.selectedLocation != null && widget.selectedLocation!.formatted_address != null  && touristController.tempPlaceDetails.value.formatted_address != null){
 
                     Get.back(result: widget.selectedLocation);                        
 
                 } else if( widget.selectedLocation != null && widget.selectedLocation!.formatted_address != null){
-                       Get.back(result: GeoModel());      
+                       Get.back(result: PlaceDetails());      
                 }else{
                      Get.back(result: null); 
                 }
@@ -232,12 +233,12 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
                         fontSize: 16,
                       ),
                     ),
-                    Text(
-                      '${controller.temporaryAddressInformation}',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    // Text(
+                    //   '${controller.tempPlaceDetails.value.formatted_address}',
+                    //   style: TextStyle(
+                    //     fontSize: 16,
+                    //   ),
+                    // ),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
@@ -254,7 +255,7 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
                                   )),
                               padding: EdgeInsets.all(20),
                               child: Center(
-                                child:controller.isRequesting.value ?  LoaderWidget(width: 20, height: 20,) :    Text(controller.temporaryAddressInformation.value.formatted_address != null ? controller.temporaryAddressInformation.value.formatted_address as String  :   'No location was selected  at this  moment  '),
+                                child:controller.isRequesting.value ?  LoaderWidget(width: 20, height: 20,) :    Text(controller.tempPlaceDetails.value.formatted_address != null ? controller.tempPlaceDetails.value.formatted_address as String  :   'No location was selected  at this  moment  '),
                               ),
                             ),
                           ],
@@ -265,7 +266,7 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
                    Expanded(
                       child: Row(
                         children: [
-                         if(controller.temporaryAddressInformation.value.formatted_address != null)   Flexible(
+                         if(controller.tempPlaceDetails.value.formatted_address != null)   Flexible(
                             child: SizedBox(
                               width: double.infinity,
                               child: TextButton(
@@ -294,14 +295,14 @@ class _SelectTouristLocationSpotScreenState extends State<SelectTouristLocationS
                               ),
                             ),
                           ).animate().scale(),
-                        if(controller.temporaryAddressInformation.value.formatted_address != null)  HSpace(20),
-                           if(controller.temporaryAddressInformation.value.formatted_address != null) Flexible(
+                        if(controller.tempPlaceDetails.value.formatted_address != null)  HSpace(20),
+                           if(controller.tempPlaceDetails.value.formatted_address != null) Flexible(
                             child: SizedBox(
                               width: double.infinity,
                               child: TextButton(
                                 onPressed: () {
                                   
-                                        Get.back(result:  controller.temporaryAddressInformation.value);
+                                        Get.back(result:  controller.tempPlaceDetails.value);
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: AppTheme.ORANGE,

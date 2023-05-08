@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
 import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
+import 'package:dirita_tourist_spot_app/constants/helper_constant.dart';
 import 'package:dirita_tourist_spot_app/delegates/voice_flow_delegate.dart';
 import 'package:dirita_tourist_spot_app/models/post.dart';
 import 'package:dirita_tourist_spot_app/models/user_account.dart';
@@ -165,7 +166,8 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.touristspot?.name ?? 'Tourist spot name',
+                    capitalize('${widget.touristspot?.name}')
+                  ,
                     style: Theme.of(context).textTheme.headline1!.copyWith(
                           height: 0,
                           fontSize: 38,
@@ -268,7 +270,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                       ]),
                   const VSpace(20),
                   Text(
-                    'About ${widget.touristspot!.famouse_name!.toUpperCase()}',
+                    'About ' + capitalize('${widget.touristspot!.famouse_name!}'),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -467,7 +469,10 @@ if( snapshot.data!.docs.length >0)SizedBox(
         return FloatingActionButton(
           backgroundColor: Colors.white,
           onPressed: () => selectInformation(context),
-          child: Icon(Icons.android),
+          child: CircleAvatar(
+    backgroundImage: AssetImage(Asset.imagePath('virtualAssistant.png')),
+    radius: 20,
+  ),
         );
       }),
       // floatingActionButton: FloatingActionButton(

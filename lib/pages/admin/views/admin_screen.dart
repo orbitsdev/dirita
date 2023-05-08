@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
+import 'package:dirita_tourist_spot_app/constants/helper_constant.dart';
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/controllers/tourist_spot_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/create_tourist_spot_screen.dart';
@@ -134,7 +135,7 @@ class _AdminScreenState extends State<AdminScreen> {
                     height: 200,
                     viewable: true,
                   ),
-                  title: Text(spot.name ?? ''),
+                  title: Text(capitalize('${spot.name}')),
                   subtitle: Text(spot.formatted_address ?? ''),
                   trailing: PopupMenuButton(
                     surfaceTintColor: Colors.white,

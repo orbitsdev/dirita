@@ -7,6 +7,7 @@ import 'package:dirita_tourist_spot_app/api/file_api.dart';
 import 'package:dirita_tourist_spot_app/api/google_map_api.dart';
 import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
 import 'package:dirita_tourist_spot_app/models/geo_model.dart';
+import 'package:dirita_tourist_spot_app/models/place_details.dart';
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/admin_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
@@ -29,6 +30,7 @@ class TouristSpotController extends GetxController {
   var touristspot = TouristSpot().obs;
   var isRequesting = false.obs;
   var temporaryAddressInformation = GeoModel().obs;
+  var tempPlaceDetails = PlaceDetails().obs;
 
 
   final CollectionReference _touristSpotCollection =  FirebaseFirestore.instance.collection('touristspots');
@@ -56,12 +58,12 @@ class TouristSpotController extends GetxController {
   }
 
   void clearSelectedAddress() {
-    temporaryAddressInformation(GeoModel());
+    tempPlaceDetails(PlaceDetails());
     update();
   }
 
-  void updateSelected(GeoModel geoModel) {
-    temporaryAddressInformation(geoModel);
+  void updateSelected(PlaceDetails newPlace) {
+    tempPlaceDetails(newPlace);
     update();
   }
 
@@ -92,22 +94,32 @@ class TouristSpotController extends GetxController {
   void getLocationInformation(
       {required BuildContext context, required LatLng latlng}) async {
     try {
+
+
+
       isRequesting(true);
       update();
 
       final response = await GoogleMapApi.geoRequest(latlng);
-      final data = response.data['results'][0];
-      final plus_code = response.data['plus_code'];
+      final placeId = response.data['results'][0]['place_id'];
+     
+      final results =  await GoogleMapApi.placeDetailsRequest(placeId);
+      final resuldata = results.data['result'];
+        PlaceDetails new_place_details = PlaceDetails(
+        
+        formatted_address: resuldata['formatted_address'],
+        place_name: resuldata['name'],
+         place_id: resuldata['place_id'], 
+         latitude: resuldata['geometry']['location']['lat'],
+         longitude: resuldata['geometry']['location']['lng']
+          );
+      
 
-      GeoModel geodata = GeoModel(
-        place_id: data['place_id'],
-        formatted_address: data['formatted_address'],
-        latitude: data['geometry']['location']['lat'],
-        longitude: data['geometry']['location']['lng'],
-      );
-
-      temporaryAddressInformation(geodata);
+          print(new_place_details.toString());
+          tempPlaceDetails(new_place_details);
+    
       isRequesting(false);
+      
       update();
     } on PlatformException catch (e) {
       handleError(context, e);
@@ -129,35 +141,23 @@ class TouristSpotController extends GetxController {
     }
   }
 
-  Future<void> searchTouristSpots(String query) async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('touristspot')
-        .where('name', isGreaterThanOrEqualTo: query)
-        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
-        .limit(10)
-        .get();
+Future<void> searchTouristSpots(String query) async {
+  final lowercaseQuery = query.toLowerCase();
 
-    final results =
-        snapshot.docs.map((doc) => TouristSpot.fromMap(doc.data())).toList();
-    tsuggestions(results);
-  }
-  
-// Future<void> searchTouristSpots(String query) async {
-//   final lowercaseQuery = query.toLowerCase();
+  final snapshot = await FirebaseFirestore.instance
+      .collection('touristspot')
+      .where('name', isGreaterThanOrEqualTo: lowercaseQuery)
+      .where('name', isLessThanOrEqualTo: lowercaseQuery + '\uf8ff')
+      .limit(10)
+      .get();
 
-//   final snapshot = await FirebaseFirestore.instance
-//     .collection('touristspot')
-//     .where('name', isGreaterThanOrEqualTo: lowercaseQuery)
-//     .where('name', isLessThanOrEqualTo: lowercaseQuery + '\uf8ff')
-//     .orderBy('name')
-//     .limit(10)
-//     .get();
+  final results =
+      snapshot.docs.map((doc) => TouristSpot.fromMap(doc.data())).toList();
+  tsuggestions(results);
+}
 
-//   final results = snapshot.docs
-//     .map((doc) => TouristSpot.fromMap(doc.data()))
-//     .toList();
-//   tsuggestions(results);
-// }
+
+
 
 
   Future<void> fetchInitialTouristSPot() async {
@@ -201,7 +201,7 @@ class TouristSpotController extends GetxController {
       TouristSpot new_touristspot = TouristSpot(
         user_uid: uid,
         id: id,
-        name: name,
+        name: name.toLowerCase(),
         famouse_name: famouse_name,
         about_information: about_information,
         more_information: more_information,

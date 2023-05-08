@@ -65,7 +65,7 @@ void initState() {
     }
   }
 
-  void createPost(BuildContext context){
+void createPost(BuildContext context){
 
      _focusScopeNode.unfocus(); 
     if(_key.currentState!.validate()){

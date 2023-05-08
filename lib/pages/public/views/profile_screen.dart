@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dirita_tourist_spot_app/constants/helper_constant.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/controller/profile_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/profile_card.widget.dart';
@@ -139,7 +140,7 @@ void getImage(BuildContext context) async {
                         children: [
                         
                           Text(
-                            '${controller.user.value.first_name} ${controller.user.value.last_name}',
+                           capitalize('${controller.user.value.first_name} ${controller.user.value.last_name}'),
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -168,7 +169,7 @@ void getImage(BuildContext context) async {
                   return Column(
                     children: [
                       ProfileCardWidget(
-                          icon: Icons.person_2_outlined, text: '${controller.user.value.first_name} ${controller.user.value.last_name}'),
+                          icon: Icons.person_2_outlined, text: capitalize('${controller.user.value.first_name} ${controller.user.value.last_name}')),
                       Divider(
                         color: Colors.grey.shade300,
                       ),

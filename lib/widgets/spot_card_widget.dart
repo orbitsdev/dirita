@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dirita_tourist_spot_app/constants/helper_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shimmer/shimmer.dart';
@@ -76,7 +77,7 @@ class SpotCardWidget extends StatelessWidget {
             left: 0,
             child: Container(
             padding: const EdgeInsets.all(10) ,
-            child: Text(touristspot?.name ?? 'Tourist Title Here'  , style: TextStyle(height: 0, fontSize: 22, color: Colors.white),),
+            child: Text( capitalize('${touristspot?.name}')  , style: TextStyle(height: 0, fontSize: 22, color: Colors.white),),
           )),
           Positioned(
             top: 0,

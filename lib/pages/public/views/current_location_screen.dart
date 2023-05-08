@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:dirita_tourist_spot_app/models/geo_model.dart';
+import 'package:dirita_tourist_spot_app/models/place_details.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/controllers/location_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/controller/geolocation_controller.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
@@ -39,7 +40,7 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
    Marker? selectedMarker;
    Circle? selectedCircle;
    bool isShow =true;
-  late GeoModel selectedLocation;
+  late PlaceDetails selectedLocation;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),

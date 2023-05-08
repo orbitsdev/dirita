@@ -56,12 +56,9 @@ class _TouristScreenState extends State<TouristScreen> {
         child: Container(
         color: AppTheme.BACKGROUND,
         padding: const EdgeInsets.all(16),
-          child: const Text(
-            'Tourist Spots',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+          child:  Text(
+            'Tourist Spots'.toUpperCase(),
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
       ),

@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.BACKGROUND,
-      drawer: Drawer(),
+     
       endDrawer: Drawer(
         child: GetBuilder<AuthController>(
           builder: (controller) => SafeArea(
@@ -112,13 +112,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: Builder(
-          builder: (context) {
-            return IconButton(onPressed: ()=>openDrawer(context), icon: Icon(Icons.menu , color: AppTheme.ORANGE,));
-          }
-        ),
+        // leading: Builder(
+        //   builder: (context) {
+        //     return IconButton(onPressed: ()=>openDrawer(context), icon: Icon(Icons.menu , color: AppTheme.ORANGE,));
+        //   }
+        // ),
         title: Text(
-          'Home ',
+          'Home'.toUpperCase(),
+
           
         ),
         actions: [

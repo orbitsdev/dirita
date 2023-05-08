@@ -1,6 +1,7 @@
 
 
 
+import 'package:dirita_tourist_spot_app/pages/admin/views/privacy_and_policy.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:flutter/gestures.dart';
@@ -66,13 +67,18 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
-  void _register(BuildContext context) {
+  void _register(BuildContext context)  async{
     // Unfocus the current input field
     _focusScopeNode.unfocus();
 
     // Validate the form
-    if (_key.currentState!.validate()) {
+    if (_key.currentState!.validate())  {
           authcontroller.registerWithEmailAndPassword(context: context, email: _emailController.text.trim(), password: _passwordController.text.trim(), first_name: _firstNameController.text.trim(), last_name: _lastNameController.text.trim(), role: widget.name ?? 'tourist');
+
+        // final isAgree =  await Get.to(()=> PrivacyAndPolicy());
+
+        // if(isAgree){
+        // }
     }
   }
 

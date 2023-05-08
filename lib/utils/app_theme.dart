@@ -116,13 +116,59 @@ class AppTheme {
   static const double BUTTON_ICON_ICON_ICON_BORDER_RADIUS = 4.0;
 
 static  TextTheme CUSTOM_TEXT_THEME = TextTheme(
-         
-      // headline1:CupertinoTheme.of(context).textTheme.textStyle,
-      // headline2:CupertinoTheme.of(context).textTheme.textStyle,
-      // headline3:CupertinoTheme.of(context).textTheme.textStyle,
-      // bodyText1:CupertinoTheme.of(context).textTheme.textStyle,
-      // bodyText2:CupertinoTheme.of(context).textTheme.textStyle,
-  
+     
+   headline1: GoogleFonts.poppins(
+    fontSize: 32,
+    fontWeight: FontWeight.bold,
+  ),
+  headline2: GoogleFonts.poppins(
+    fontSize: 28,
+    fontWeight: FontWeight.bold,
+  ),
+  headline3: GoogleFonts.poppins(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  ),
+  headline4: GoogleFonts.poppins(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+  ),
+  headline5: GoogleFonts.poppins(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+  ),
+  headline6: GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  ),
+  subtitle1: GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+  ),
+  subtitle2: GoogleFonts.poppins(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+  ),
+  bodyText1: GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+  ),
+  bodyText2: GoogleFonts.poppins(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+  ),
+  button: GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  ),
+  caption: GoogleFonts.poppins(
+    fontSize: 12,
+    fontWeight: FontWeight.normal,
+  ),
+  overline: GoogleFonts.poppins(
+    fontSize: 10,
+    fontWeight: FontWeight.normal,
+  ),
    );
 
 }
