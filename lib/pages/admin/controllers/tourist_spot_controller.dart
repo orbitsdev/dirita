@@ -141,6 +141,24 @@ class TouristSpotController extends GetxController {
         snapshot.docs.map((doc) => TouristSpot.fromMap(doc.data())).toList();
     tsuggestions(results);
   }
+  
+// Future<void> searchTouristSpots(String query) async {
+//   final lowercaseQuery = query.toLowerCase();
+
+//   final snapshot = await FirebaseFirestore.instance
+//     .collection('touristspot')
+//     .where('name', isGreaterThanOrEqualTo: lowercaseQuery)
+//     .where('name', isLessThanOrEqualTo: lowercaseQuery + '\uf8ff')
+//     .orderBy('name')
+//     .limit(10)
+//     .get();
+
+//   final results = snapshot.docs
+//     .map((doc) => TouristSpot.fromMap(doc.data()))
+//     .toList();
+//   tsuggestions(results);
+// }
+
 
   Future<void> fetchInitialTouristSPot() async {
     final snapshot = await FirebaseFirestore.instance

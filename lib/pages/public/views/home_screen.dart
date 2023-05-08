@@ -3,6 +3,8 @@ import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
 import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
 import 'package:dirita_tourist_spot_app/delegates/tourist_spot_search_delegate.dart';
+import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/views/settings_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/current_location_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/profile_screen.dart';
@@ -37,21 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _pages = [
     TouristScreen(),
-    Container(
-        child: Center(
-      child: Text(
-        'This feature is not availble',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-    )),
     CurrentLocationScreen(),
-     Container(
-        child: Center(
-      child: Text(
-        'This feature is not availble',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-    )),
+    SettingsScreen(),
   ];
 
   void openDrawer(context) {
@@ -63,7 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _speakWelcomeMessage() async {
-    TextToSpeechController.speak(VoiceAiSpeech.welcomeMessage);
+     final enabled = await SharedPreferencesManager.getEnableWelcomeVoice();
+
+     if(enabled){
+       TextToSpeechController.speak(VoiceAiSpeech.welcomeMessage);
+     }
+   
   }
 
   @override
@@ -171,13 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           /// Likes
-          SalomonBottomBarItem(
-            unselectedColor: Colors.grey.shade600,
-            icon: Icon(Icons.favorite_border),
-            title: Text("Favorites"),
-            selectedColor: AppTheme.ORANGE,
-          ),
-
+         
           /// Search
           /// Profile
           SalomonBottomBarItem(
@@ -189,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SalomonBottomBarItem(
             unselectedColor: Colors.grey.shade600,
             icon: Icon(Icons.settings_outlined),
-            title: Text("Location"),
+            title: Text("Settings"),
             selectedColor: AppTheme.ORANGE,
           ),
         ],

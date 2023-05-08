@@ -44,4 +44,56 @@ class SharedPreferencesManager  {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(_currentLanguage, value);
   }
+
+
+  // for  setrings
+
+  static final String _enableWelcomeVoice = 'enableWelcomeVoice';
+
+  static Future<bool> getEnableWelcomeVoice() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_enableWelcomeVoice) ?? true;
+  }
+
+  static Future<bool> setEnableWelcomeVoice(value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setBool(_enableWelcomeVoice, value);
+  }
+
+
+  static final String _enableTranslationVoice = '_enableTranslationVoice';
+
+  static Future<bool> getEnableTranslationVoice() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_enableTranslationVoice) ?? true;
+  }
+
+  static Future<bool> setEnableTranslationVoice(value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setBool(_enableTranslationVoice, value);
+  }
+
+  static final String _enableRouteVoice = 'enableRouteVoice';
+
+  static Future<bool> getEnableRouteVoice() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_enableRouteVoice) ?? true;
+  }
+
+  static Future<bool> setEnableRouteVoice(value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setBool(_enableRouteVoice, value);
+  }
+  static final String _enableSharedExperienceVoice = 'enableSharedExperienceVoice';
+
+  static Future<bool> getEnableSharedExperienceVoice() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_enableSharedExperienceVoice) ?? true;
+  }
+
+  static Future<bool> setEnableSharedExperienceVoice(value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setBool(_enableSharedExperienceVoice, value);
+  }
+  
 }

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
 import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
+import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.dart';
 import 'package:dirita_tourist_spot_app/models/post.dart';
 import 'package:dirita_tourist_spot_app/models/user_account.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
@@ -39,7 +40,14 @@ class _TouristAllSharedPostScreenState extends State<TouristAllSharedPostScreen>
   }
   
  void _speakWelcomeMessage() async {
-    TextToSpeechController.speak(VoiceAiSpeech.experience);
+
+         final enabled = await SharedPreferencesManager.getEnableSharedExperienceVoice();
+
+        if(enabled){
+          TextToSpeechController.speak(VoiceAiSpeech.experience);
+        }
+
+    
   }
 
   

@@ -3,6 +3,7 @@ import 'package:dirita_tourist_spot_app/binding/app_binding.dart';
 import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/admin_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/select_tourist_location_map_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/views/settings_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/admin/views/update_tourist_spot_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/views/login_screen.dart';
@@ -53,6 +54,7 @@ class _DiritaAppState extends State<DiritaApp> {
   
 final authcontroller = Get.find<AuthController>();
 Widget authscreenlogic() {
+
 
  
 
@@ -139,6 +141,7 @@ Widget authscreenlogic() {
         GetPage(name: '/shared-post', page: () => TouristAllSharedPostScreen(), transition: Transition.cupertino),
         GetPage(name: '/profile', page: () => ProfileScreen(), transition: Transition.cupertino),
         GetPage(name: '/profile/update', page: () => UpdateProfileScreen(), transition: Transition.cupertino),
+        GetPage(name: '/settings', page: () => SettingsScreen(), transition: Transition.cupertino),
       ],
     );
   }

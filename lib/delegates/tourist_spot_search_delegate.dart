@@ -58,7 +58,7 @@ class TouristSpotSearchDelegate extends SearchDelegate {
       
     }else{
 
-    touristController.searchTouristSpots(query);
+     touristController.searchTouristSpots(query);
     }
 
 
@@ -103,21 +103,7 @@ class TouristSpotSearchDelegate extends SearchDelegate {
           ]
         ),
       ) 
-      // ListView.builder(
-      //   itemCount: touristController.tsuggestions.length,
-      //   itemBuilder: (context, index) {
-      //     final suggestion = touristController.tsuggestions[index];
-      //     return GestureDetector(
-      //         onTap: () => Get.to(() => TouristSpotDetails(touristspot:suggestion),
-      //             transition: Transition.cupertino),
-      //         child: SizedBox(
-      //           height: 300,
-      //           width: 300,
-      //           child: SpotCardWidget(touristspot:suggestion),
-      //         ),
-      //       );
-      //   },
-      // ),
+    
     );
   }
 }

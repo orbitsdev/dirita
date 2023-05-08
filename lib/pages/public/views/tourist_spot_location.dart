@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
+import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.dart';
 import 'package:dirita_tourist_spot_app/models/Direction.dart' as d;
 import 'package:dirita_tourist_spot_app/pages/admin/controllers/location_controller.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
@@ -138,7 +139,13 @@ class _TouristSpotLocationState extends State<TouristSpotLocation> {
   }
 
   void getDirection(BuildContext context) async {
-    TextToSpeechController.speak(VoiceAiSpeech.generating);
+       
+         final enabled = await SharedPreferencesManager.getEnableRouteVoice();
+       
+         if(enabled){
+              TextToSpeechController.speak(VoiceAiSpeech.generating);
+         }
+  
     final result = await locationController.getDirection(
         context: context,
         destination: LatLng(widget.touristspot!.latitude as double,
@@ -149,7 +156,7 @@ class _TouristSpotLocationState extends State<TouristSpotLocation> {
     }
   }
 
-  void setDirection(d.Direction newdirection) {
+  void setDirection(d.Direction newdirection) async {
     setState(() {
       direction = newdirection;
 
@@ -167,7 +174,20 @@ class _TouristSpotLocationState extends State<TouristSpotLocation> {
       );
     });
     moveCameraBound(direction!.bound_ne, direction!.bound_sw);
-    TextToSpeechController.speak(VoiceAiSpeech.realtimeNavigation);
+
+    
+     final enabled = await SharedPreferencesManager.getEnableRouteVoice();
+
+     if(enabled){
+       Future.delayed(Duration(seconds: 2),(){
+
+      TextToSpeechController.speak(VoiceAiSpeech.realtimeNavigation);
+
+    });
+     }
+   
+
+  
   }
 
   void moveCameraBound(LatLng northeast, LatLng southwest) {

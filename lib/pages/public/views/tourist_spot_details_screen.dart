@@ -69,6 +69,7 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
   }
 
   void selectInformation(BuildContext context) async {
+    
     await TextToSpeechController.speak(VoiceAiSpeech.selectinformation);
     if (widget.touristspot != null) {
       Modal.showInformationOptions(
@@ -172,25 +173,8 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  Wrap(
-                      alignment: WrapAlignment.start,
-                      crossAxisAlignment: WrapCrossAlignment.end,
-                      children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const HSpace(6),
-                        Text(
-                          '49.5',
-                          style: TextStyle(
-                            color: AppTheme.FONT,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const HSpace(6),
-                        Text('120 reviews',
-                            style: TextStyle(
-                                fontSize: 16, color: Colors.grey[400]))
-                      ]),
-                  const VSpace(10),
+                  
+                  const VSpace(20),
                   SizedBox(
                     height: 300,
                     child: Stack(children: [
@@ -201,14 +185,12 @@ class _TouristSpotDetailsState extends State<TouristSpotDetails> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Get.to(() => FullScreenImage());
+                              Get.to(() => FullScreenImage(imageUrl:  widget .touristspot?.featured_image?[index] ?? sampleimage));
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(right: 16.0),
                               child: CachedNetworkImage(
-                                imageUrl: widget
-                                        .touristspot?.featured_image?[index] ??
-                                    sampleimage,
+                                imageUrl: widget .touristspot?.featured_image?[index] ??  sampleimage,
                                 placeholder: (context, url) =>
                                     Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,

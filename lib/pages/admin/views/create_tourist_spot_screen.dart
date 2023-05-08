@@ -115,8 +115,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
     if (_key.currentState!.validate()) {
       if (selectedLocation == null ||
           selectedLocation?.formatted_address == null) {
-        Modal.showToast(
-            context: context, message: 'Tourist spot  location is required');
+        Modal.showToast( context: context, message: 'Tourist spot  location is required');
         return;
       }
 
@@ -250,9 +249,7 @@ class _CreateTouristSpotScreenState extends State<CreateTouristSpotScreen> {
                   SizedBox(height: 8.0),
                   InkWell(
                     onTap: () async {
-                      GeoModel response = await Get.to(() =>
-                          SelectTouristLocationSpotScreen(
-                              selectedLocation: selectedLocation));
+                      GeoModel response = await Get.to(() => SelectTouristLocationSpotScreen( selectedLocation: selectedLocation));
 
                       if (response != null) {
                         setState(() {

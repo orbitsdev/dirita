@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
 import 'package:dirita_tourist_spot_app/delegates/sticky_header_delegate.dart';
+import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.dart';
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
@@ -90,9 +91,13 @@ StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             
 
             return GestureDetector(
-              onTap: () {
+              onTap: () async {
                 Get.to(() => TouristSpotDetails(touristspot:spot), transition: Transition.cupertino);
-                TextToSpeechController.speak(VoiceAiSpeech.selectLanguage);
+                 final enabled = await SharedPreferencesManager.getEnableTranslationVoice();
+                if(enabled){
+                    TextToSpeechController.speak(VoiceAiSpeech.selectLanguage);
+                }
+                
               },
               child: SizedBox(
                 height: 300,
