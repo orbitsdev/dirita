@@ -1,3 +1,4 @@
+import 'package:alan_voice/alan_voice.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
@@ -20,6 +21,8 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:google_translator/google_translator.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import 'tourist_spot_details_screen.dart';
 
@@ -31,6 +34,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
   final authcontroller = Get.find<AuthController>();
 
   FlutterTts flutterTts = FlutterTts();
@@ -64,7 +69,69 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _speakWelcomeMessage();
+      // _initSpeech();
   }
+
+// _HomeScreenState() {
+//   /// Init Alan Button with project key from Alan AI Studio      
+//   AlanVoice.addButton("105ab5588b84cc059beb71910ead599e2e956eca572e1d8b807a3e2338fdd0dc/stage", buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT,     );
+
+//   /// Handle commands from Alan AI Studio
+//   AlanVoice.onCommand.add((command) {
+//     handleCommand(command.data);
+//   });
+// }
+
+  void handleCommand(Map<String,dynamic> command){
+
+    //  print(command['command']);
+
+        switch(command['command']){
+          case 'open-search-bar':
+          openSearchBar();
+          break;
+
+          case 'about-tourist':
+          openSearchBar();
+          break;
+
+          case 'more-information-about-tourist':
+          openSearchBar();
+          break;
+
+          case 'generate-route':
+          openSearchBar();
+          break;
+
+          case 'close-search-bar':
+             Get.back();
+          break;
+
+          case 'back':
+          openSearchBar();
+          break;
+
+          case 'open-tourist-list':
+          Get.to(()=> HomeScreen());
+          break;
+          case 'open-settings':
+          print('HEllowdasdasdasdasd');
+          print('__________________________________');
+          setState(() {
+            _currentIndex = 2;
+          });
+          break;
+        }
+   }
+
+   void openSearchBar(){
+    showSearch(context: context, delegate: TouristSpotSearchDelegate());
+   }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -125,8 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Builder(builder: (context) {
             return IconButton(
-                onPressed: () => showSearch(
-                    context: context, delegate: TouristSpotSearchDelegate()),
+                onPressed: () => showSearch(context: context, delegate: TouristSpotSearchDelegate()),
                 icon: const Icon(Icons.search));
           }),
           if (auth.currentUser == null)
@@ -183,6 +249,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+
+      
     );
   }
 }

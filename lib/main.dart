@@ -32,6 +32,8 @@ import 'pages/auth/views/account_selection_screen.dart';
 import 'pages/onboarding/views/boarding_screen.dart';
 import 'pages/public/views/tourist_all_shared_post.screen.dart';
 
+import 'package:alan_voice/alan_voice.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

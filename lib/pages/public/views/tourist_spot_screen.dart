@@ -1,3 +1,4 @@
+import 'package:alan_voice/alan_voice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
@@ -8,15 +9,14 @@ import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
+import 'package:dirita_tourist_spot_app/widgets/spot_card_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/sv_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-
 import 'package:get/get.dart';
 
-import '../../../widgets/spot_card_widget.dart';
 
 class TouristScreen extends StatefulWidget {
   const TouristScreen({Key? key}) : super(key: key);
@@ -27,12 +27,11 @@ class TouristScreen extends StatefulWidget {
 
 class _TouristScreenState extends State<TouristScreen> {
 
-
+  
     
   @override
   void initState() {
     super.initState();
-
 
 
   }
