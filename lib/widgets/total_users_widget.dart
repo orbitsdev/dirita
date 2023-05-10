@@ -61,7 +61,7 @@ class _TotalUsersWidgetState extends State<TotalUsersWidget> {
                               HSpace(15),
                               Flexible(
                                 child: Text(
-                                  'Total Tourist Registered ',
+                                  'Total visitor  ',
                                   style: TextStyle(
                                     height: 0,
                                     fontSize: 14, fontWeight: FontWeight.bold),

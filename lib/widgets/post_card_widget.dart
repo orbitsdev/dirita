@@ -7,7 +7,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
+import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
 import 'package:dirita_tourist_spot_app/pages/public/controller/post_controller.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/visitors_profile_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -63,13 +65,15 @@ class PostCardWidget extends StatelessWidget {
             color: Colors.white,
             child: Row(
               children: [
-                ProfileWidget(),
+                GestureDetector(
+                  onTap: ()=>  (auth.currentUser!= null &&  auth.currentUser!.uid != post.uid) ?  Get.to(()=>  VisitorsProfileScreen(user:user)): null,
+                  child: ProfileWidget()),
                 SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${user.first_name}${user.last_name}',
+                      '${user.first_name} ${user.last_name}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -116,27 +120,30 @@ class PostCardWidget extends StatelessWidget {
         style: TextStyle(fontSize: 16),
       ),
       SizedBox(height: 10),
-      if(post.post_image != null)CachedNetworkImage(
-        height: 240,
-        imageUrl: post.post_image ?? sampleimage,
-        placeholder: (context, url) => Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.white,
+      if(post.post_image != null)GestureDetector(
+        onTap: () => Get.to(()=> FullScreenImage(imageUrl: post.post_image ?? sampleimage ,) ) ,
+        child: CachedNetworkImage(
+          height: 240,
+          imageUrl: post.post_image ?? sampleimage,
+          placeholder: (context, url) => Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-        fit: BoxFit.cover,
-        imageBuilder: (context, imageProvider) => Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit.cover,
+          errorWidget: (context, url, error) => Icon(Icons.error),
+          fit: BoxFit.cover,
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dirita_tourist_spot_app/constants/helper_constant.dart';
+import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';

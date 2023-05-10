@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
 import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
+import 'package:dirita_tourist_spot_app/constants/helper_constant.dart';
 import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.dart';
 import 'package:dirita_tourist_spot_app/models/post.dart';
 import 'package:dirita_tourist_spot_app/models/user_account.dart';
+import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
 import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:dirita_tourist_spot_app/widgets/post_card_shimmer.dart';
 import 'package:dirita_tourist_spot_app/widgets/post_card_widget.dart';
@@ -83,20 +85,23 @@ class _TouristAllSharedPostScreenState extends State<TouristAllSharedPostScreen>
                   fit: StackFit.expand,
                   children:[
                     
-                     CachedNetworkImage(
-                    imageUrl: widget.spot?.cover_image ??
-                        sampleimage, // Replace with your image URL
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        color: Colors.white,
-                      ),
-                    ),
-                    placeholderFadeInDuration: Duration(
-                        milliseconds: 500), // Adjust the duration as needed
-                  ),
+                     GestureDetector(
+                      onTap: ()=> Get.to(()=> FullScreenImage(imageUrl:widget.spot?.cover_image ?? sampleimage ,)),
+                       child: CachedNetworkImage(
+                                         imageUrl: widget.spot?.cover_image ??
+                          sampleimage, // Replace with your image URL
+                                         fit: BoxFit.cover,
+                                         placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          color: Colors.white,
+                        ),
+                                         ),
+                                         placeholderFadeInDuration: Duration(
+                          milliseconds: 500), // Adjust the duration as needed
+                                       ),
+                     ),
               
 
                     Positioned(
@@ -119,17 +124,17 @@ class _TouristAllSharedPostScreenState extends State<TouristAllSharedPostScreen>
             ),
           )),
              Positioned(
-  bottom: 30,
+  bottom: 60,
   right: 40,
   child:Container(
     
   width: MediaQuery.of(context).size.width * 0.70,
   alignment: Alignment.bottomRight,
   child: Text(
-    widget.spot?.name ?? 'Name',
+    capitalize('${widget.spot?.name}'),
     style: TextStyle(
       fontSize: 28,
-      height: 1,
+      height: 0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),

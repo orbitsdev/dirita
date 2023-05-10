@@ -7,6 +7,7 @@ import 'package:dirita_tourist_spot_app/pages/admin/views/create_tourist_spot_sc
 import 'package:dirita_tourist_spot_app/pages/admin/views/update_tourist_spot_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/profile_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/report_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/utils/asset.dart';
@@ -102,7 +103,23 @@ class _AdminScreenState extends State<AdminScreen> {
                     title: Text(
                       'Profile',
                       style: TextStyle(fontSize: 18, color: AppTheme.FONT),
-                    )),
+                    ),
+                    ),
+
+                    ListTile(
+                    onTap: (){
+                     
+                      Get.to(()=> ReportScreen(admin: true));
+                    },
+                    leading: Icon(
+                      Icons.assignment_outlined,
+                      color: AppTheme.FONT,
+                    ),
+                    title: Text(
+                      'Reports',
+                      style: TextStyle(fontSize: 18, color: AppTheme.FONT),
+                    ),
+                    ),
           ]),
         ),
       ),

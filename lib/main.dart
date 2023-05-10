@@ -13,6 +13,7 @@ import 'package:dirita_tourist_spot_app/pages/auth/views/signup_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/current_location_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/home_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/list_spots.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/profile_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/report_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
@@ -31,7 +32,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/admin/views/create_tourist_spot_screen.dart';
 import 'pages/auth/views/account_selection_screen.dart';
 import 'pages/onboarding/views/boarding_screen.dart';
+import 'pages/public/views/list_of_visitors.dart';
 import 'pages/public/views/tourist_all_shared_post.screen.dart';
+import 'pages/public/views/visitors_profile_screen.dart';
 
 
 
@@ -61,13 +64,6 @@ final authcontroller = Get.find<AuthController>();
 
 Widget authscreenlogic() {
 
-//  return ReportScreen();
-  
-  // return TermsAndCondition();
-  // return BoardingScreen();
-
-    //return PrivacyAndPolicy();
-    // return TermsAndCondition();
 
 
   if(widget.showOnBoarding == false) {
@@ -158,6 +154,9 @@ Widget authscreenlogic() {
         GetPage(name: '/privacy-and-policy', page: () => PrivacyAndPolicy(), transition: Transition.cupertino),
         GetPage(name: '/terms-and-condition', page: () => TermsAndCondition(), transition: Transition.cupertino),
         GetPage(name: '/reports', page: () => ReportScreen(), transition: Transition.cupertino),
+        GetPage(name: '/list-of-tourist', page: () => ListSpot(), transition: Transition.cupertino),
+        GetPage(name: '/list-of-visitors', page: () => ListOfVisitors(), transition: Transition.cupertino),
+        GetPage(name: '/visitor-profile', page: () => VisitorsProfileScreen(), transition: Transition.cupertino),
       ],
     );
   }

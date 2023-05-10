@@ -62,7 +62,7 @@ class _TotalTouristSpotWidgetState extends State<TotalTouristSpotWidget> {
                               HSpace(15),
                               Flexible(
                                 child: Text(
-                                  'Total Tourist Spots',
+                                  'Total Spots',
                                   style: TextStyle(
                                     height: 0,
                                     fontSize: 14, fontWeight: FontWeight.bold,),
@@ -83,63 +83,7 @@ class _TotalTouristSpotWidgetState extends State<TotalTouristSpotWidget> {
                     );
               }
                 
-            //     Column(
-            //       children: [
-        
-            //                           VSpace(MediaQuery.of(context).size.height * 0.20),
-            //         Container(
-            //           padding: EdgeInsets.all(16),
-            //           decoration: BoxDecoration(
-            //           color: Colors.white,
-            //             boxShadow: [
-            
-            //             ],
-            //             borderRadius: BorderRadius.circular(8)
-            //           ),
-            //           child: Column(
-            //             mainAxisSize: MainAxisSize.min,
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-        
-        
-        
-            //               Row(
-            //                 children: [
-            //                   ClipOval(
-            //                     child: Container(
-        
-            //                       color: Colors.amber[200], 
-            //                       width: 40,
-            //                       height: 40,
-            //                       child: Center(child: Icon(Icons.bar_chart_outlined))
-                                  
-            //                     ),
-            //                   ),
-            //                   HSpace(15),
-            //                   Text(
-            //                     'Total Tourist Spots',
-            //                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            //                   ),
-            //                 ],
-            //               ),
-            //               SizedBox(height: 16),
-            //               Container(
-                        
-                        
-            //                 child: Center(
-            //                   child: Text(
-            //                     totalCount.toString(),
-            //                     style: TextStyle(fontSize: 64, color: Colors.black,  fontWeight: FontWeight.bold),
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       ],
-            //     );
-            //   },
-            // );
+          
        ),
      ),
    );
