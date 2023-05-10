@@ -78,6 +78,7 @@ class PrivacyAndPolicy extends StatelessWidget {
               header: '3. Data Storage and Security',
                 subheader: '3.1 Data Storage:',
                 description:
+                
                     'The personal and location information provided by Users is securely stored on Firebase, a trusted third-party platform. Firebase adheres to industry standards and provides robust security measures to protect User data.',
                 ),
             ContentWidget(
