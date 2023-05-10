@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Text(
-            'DIRIKITA',
+            'DIRITA',
             style: GoogleFonts.montserrat(
               fontSize: 48.0,
               fontWeight: FontWeight.bold,
@@ -142,6 +142,9 @@ class _LoginScreenState extends State<LoginScreen> {
       width:24,
       height:24,
       child: Checkbox(
+         side: BorderSide(
+          color: AppTheme.ORANGE
+        ),
         value: obscure,
         onChanged: (newValue) {
           setState(() {

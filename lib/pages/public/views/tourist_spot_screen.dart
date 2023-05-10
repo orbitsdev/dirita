@@ -1,4 +1,3 @@
-import 'package:alan_voice/alan_voice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
@@ -7,14 +6,9 @@ import 'package:dirita_tourist_spot_app/localdatabase/shared_preference_manager.
 import 'package:dirita_tourist_spot_app/models/tourist_spot.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
-import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/loader_widget.dart';
 import 'package:dirita_tourist_spot_app/widgets/spot_card_widget.dart';
-import 'package:dirita_tourist_spot_app/widgets/sv_space.dart';
-import 'package:dirita_tourist_spot_app/widgets/v_space.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:get/get.dart';
 
 
@@ -57,7 +51,9 @@ class _TouristScreenState extends State<TouristScreen> {
         padding: const EdgeInsets.all(16),
           child:  Text(
             'Tourist Spots'.toUpperCase(),
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.headline3!.copyWith(
+              fontSize:24,
+            ),
           ),
         ),
       ),
@@ -67,7 +63,7 @@ StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       builder: (context, snapshot) {
 
         if(snapshot.hasError){
-          return Center(child: Text('Something went wrong'));
+          return const Center(child: Text('Something went wrong'));
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SliverFillRemaining(
@@ -105,50 +101,12 @@ StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       },
     ),
 
-          // SliverGrid.count(
-          //   crossAxisCount: 2,
-          //   mainAxisSpacing: 12,
-          //   crossAxisSpacing: 12,
-          //   children: List.generate(
-          //     30,
-          //     (index) => GestureDetector(
-          //       onTap: () => Get.to(() => TouristSpotDetails(),
-          //           transition: Transition.cupertino),
-          //       child: const SizedBox(
-          //         height: 300,
-          //         child: SpotCardWidget(),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+       
         ],
       ),
     );
 
     
 
-    // return  Padding(
-    //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    //   child: Column(
-    //     mainAxisSize: MainAxisSize.max,
-    //     children: [
-    //       Container(height: 300 ,color: Colors.red,),
-    //       Expanded(
-    //         child: MasonryGridView.count(
-    //           physics: const ClampingScrollPhysics(),
-    //             crossAxisCount: 2,
-    //             mainAxisSpacing: 12,
-    //             crossAxisSpacing: 12,
-    //             itemCount: 30,
-    //             itemBuilder: (context, index) {
-    //               return GestureDetector(
-    //                 onTap: ()=> Get.to(()=> TouristDetailsScreen(), transition: Transition.cupertino),
-    //                 child: const SpotCardWidget());
-    //             },
-    //           ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

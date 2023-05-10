@@ -72,12 +72,12 @@ class SpotCardWidget extends StatelessWidget {
             ),
           )),
           Positioned(
-            top:20,
+            top:15,
             right: 10,
             left: 0,
             child: Container(
             padding: const EdgeInsets.all(10) ,
-            child: Text( capitalize('${touristspot?.name}')  , style: TextStyle(height: 0, fontSize: 22, color: Colors.white),),
+            child: Text( capitalize('${touristspot?.name}')  , style: TextStyle(height: 0, fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
           )),
           Positioned(
             top: 0,

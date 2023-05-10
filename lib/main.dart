@@ -14,6 +14,7 @@ import 'package:dirita_tourist_spot_app/pages/full_screen_image.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/current_location_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/home_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/profile_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/report_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_details_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_location.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/update_profile_screen.dart';
@@ -57,11 +58,16 @@ class DiritaApp extends StatefulWidget {
 class _DiritaAppState extends State<DiritaApp> {
 
 final authcontroller = Get.find<AuthController>();
+
+
 Widget authscreenlogic() {
 
+//  return ReportScreen();
+  
+  // return TermsAndCondition();
   // return BoardingScreen();
 
-    // return PrivacyAndPolicy();
+    //return PrivacyAndPolicy();
     // return TermsAndCondition();
 
 
@@ -124,6 +130,7 @@ Widget authscreenlogic() {
       smartManagement: SmartManagement.full,
       initialBinding: AppBindings() ,
       theme: ThemeData(
+        
         colorSchemeSeed: AppTheme.ORANGE,
         useMaterial3: true,
         textTheme:AppTheme.CUSTOM_TEXT_THEME,
@@ -149,8 +156,9 @@ Widget authscreenlogic() {
         GetPage(name: '/profile', page: () => ProfileScreen(), transition: Transition.cupertino),
         GetPage(name: '/profile/update', page: () => UpdateProfileScreen(), transition: Transition.cupertino),
         GetPage(name: '/settings', page: () => SettingsScreen(), transition: Transition.cupertino),
-        GetPage(name: '/privacy-and-polcy', page: () => PrivacyAndPolicy(), transition: Transition.cupertino),
+        GetPage(name: '/privacy-and-policy', page: () => PrivacyAndPolicy(), transition: Transition.cupertino),
         GetPage(name: '/terms-and-condition', page: () => TermsAndCondition(), transition: Transition.cupertino),
+        GetPage(name: '/reports', page: () => ReportScreen(), transition: Transition.cupertino),
       ],
     );
   }

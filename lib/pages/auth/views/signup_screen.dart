@@ -2,6 +2,7 @@
 
 
 import 'package:dirita_tourist_spot_app/pages/admin/views/privacy_and_policy.dart';
+import 'package:dirita_tourist_spot_app/pages/admin/views/terms_and_condtion.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:flutter/gestures.dart';
@@ -119,7 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
           ),
           Text(
-            'DIRIKITA',
+            'DIRITA',
             style: GoogleFonts.montserrat(
               fontSize: 48.0,
               fontWeight: FontWeight.bold,
@@ -203,13 +204,18 @@ class _SignupScreenState extends State<SignupScreen> {
                     return null;
                   },
                 ),
-                const VSpace(10),
+                const VSpace(14),
                 Row(
   children: [
     SizedBox(
       width:24,
       height:24,
       child: Checkbox(
+        side: BorderSide(
+          color: AppTheme.ORANGE
+        ),
+        shape: RoundedRectangleBorder(  borderRadius: BorderRadius.circular(4.0), // Set the desired border radius here
+  ),
         value: obscure,
         onChanged: (newValue) {
           setState(() {
@@ -219,7 +225,7 @@ class _SignupScreenState extends State<SignupScreen> {
         activeColor: AppTheme.ORANGE, // Set the active color to AppTheme.ORANGE
       ),
     ),
-    HSpace(6),
+    HSpace(10),
     Text(
       'Show Password',
       style: TextStyle(
@@ -228,7 +234,10 @@ class _SignupScreenState extends State<SignupScreen> {
     ),
   ],
 ),
-                const VSpace(16),
+
+
+
+                const VSpace(14),
                 GetBuilder<AuthController>(
                   
                   builder: (controller)=> SizedBox( 
@@ -252,8 +261,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
-                const VSpace(16),
-                RichText(
+                const VSpace(10),
+                  RichText(
                   text: TextSpan(
                     children: [
                       const TextSpan(
@@ -275,7 +284,56 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ],
                   ),
-                )
+                ),
+                const VSpace(16),
+                
+RichText(
+  textAlign:TextAlign.center,
+  text: TextSpan(
+    children: [
+      TextSpan(
+        text: 'By continuing, you agree to Dirita\'s ',
+        style: TextStyle(fontSize: 12, color:Colors.grey.shade600),
+      ),
+      TextSpan(
+        text: 'Terms of Use',
+        style: TextStyle(
+          fontSize: 12,
+          color: Colors.blue,
+          decoration: TextDecoration.underline,
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+              Get.to(()=>TermsAndCondition());
+          },
+      ),
+      TextSpan(
+        text: '. Read our ',
+        style:TextStyle(fontSize: 12, color:Colors.grey.shade600),
+      ),
+      TextSpan(
+        text: 'Privacy Policy',
+        style: TextStyle(
+          fontSize: 12,
+          color: Colors.blue,
+          decoration: TextDecoration.underline,
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            Get.to(()=>PrivacyAndPolicy());
+            // Add your functionality for Privacy Policy here
+            // For example, navigate to the Privacy Policy screen or open a web page
+          },
+      ),
+      TextSpan(
+        text: '.',
+        style: TextStyle(fontSize: 12, color:Colors.grey.shade600),
+      ),
+    ],
+  ),
+),
+
+              
               ],
             ),
           ),

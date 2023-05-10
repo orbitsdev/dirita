@@ -1,5 +1,4 @@
-import 'package:alan_voice/alan_voice.dart';
-import 'package:country_code_picker/country_code_picker.dart';
+
 import 'package:dirita_tourist_spot_app/ai/text_to_speech_controller.dart';
 import 'package:dirita_tourist_spot_app/ai/voice_data.dart';
 import 'package:dirita_tourist_spot_app/constants/firebase_constant.dart';
@@ -9,6 +8,7 @@ import 'package:dirita_tourist_spot_app/pages/admin/views/settings_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/auth/controller/auth_controller.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/current_location_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/profile_screen.dart';
+import 'package:dirita_tourist_spot_app/pages/public/views/report_screen.dart';
 import 'package:dirita_tourist_spot_app/pages/public/views/tourist_spot_screen.dart';
 import 'package:dirita_tourist_spot_app/utils/app_theme.dart';
 import 'package:dirita_tourist_spot_app/utils/asset.dart';
@@ -16,15 +16,10 @@ import 'package:dirita_tourist_spot_app/utils/modal.dart';
 import 'package:dirita_tourist_spot_app/widgets/h_space.dart';
 import 'package:dirita_tourist_spot_app/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
-import 'package:google_translator/google_translator.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
-import 'tourist_spot_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -42,10 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int _currentIndex = 0;
 
-  List<Widget> _pages = [
+  List<Widget> _pages =  [
     TouristScreen(),
     CurrentLocationScreen(),
     SettingsScreen(),
+    ReportScreen(),
   ];
 
   void openDrawer(context) {
@@ -185,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //   }
         // ),
         title: Text(
-          'Home'.toUpperCase(),
+          'Dirita'.toUpperCase(),
 
           
         ),
@@ -226,8 +222,8 @@ class _HomeScreenState extends State<HomeScreen> {
           /// Home
           SalomonBottomBarItem(
             unselectedColor: Colors.grey.shade600,
-            icon: Icon(Icons.home_outlined),
-            title: Text("Public"),
+            icon: Icon(Icons.beach_access),
+            title: Text("Spots"),
             selectedColor: AppTheme.ORANGE,
           ),
 
@@ -245,6 +241,12 @@ class _HomeScreenState extends State<HomeScreen> {
             unselectedColor: Colors.grey.shade600,
             icon: Icon(Icons.settings_outlined),
             title: Text("Settings"),
+            selectedColor: AppTheme.ORANGE,
+          ),
+          SalomonBottomBarItem(
+            unselectedColor: Colors.grey.shade600,
+            icon: Icon(Icons.assignment_outlined),
+            title: Text("Reports"),
             selectedColor: AppTheme.ORANGE,
           ),
         ],

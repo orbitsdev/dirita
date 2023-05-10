@@ -33,7 +33,7 @@ const AccountSelectionScreen({ Key? key }) : super(key: key);
 
           IconButton(onPressed: (){
             Get.to(()=> HomeScreen());
-          }, icon: Icon(Icons.home_rounded, color: AppTheme.ORANGE, size: 34,)),
+          }, icon: Icon(Icons.home_outlined, color: AppTheme.ORANGE, size:26)),
 
           HSpace(8),
         ],
@@ -45,10 +45,9 @@ const AccountSelectionScreen({ Key? key }) : super(key: key);
         padding: const EdgeInsets.symmetric(horizontal: 16,),
         physics: const BouncingScrollPhysics(),
         children: [   
-              const VSpace(10),
-            const Padding(
+             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text('What are you? ', style: TextStyle(fontSize: 32),),
+              child: Text('What are you? ', style: Theme.of(context).textTheme.headline1,),
             ),
                     const VSpace(5),
             GestureDetector(
@@ -56,7 +55,7 @@ const AccountSelectionScreen({ Key? key }) : super(key: key);
                 Get.to(()=> SignupScreen(name: 'tourist',));
               },
               child: AccountCardWidget(
-                color: Color.fromARGB(255, 114, 137, 241),
+                color: Color.fromARGB(255, 71, 91, 184),
                 name: 'A Tourist',
                 image: 'drone-pilot-lottie.json',
                 description: 'Someone who goes on trips to discover new places and have fun.',
@@ -70,7 +69,7 @@ const AccountSelectionScreen({ Key? key }) : super(key: key);
                 Get.to(()=> SignupScreen(name: 'tourist-spot-manager',));
               },
               child: AccountCardWidget(
-                color: AppTheme.CARD8,
+                color: Color.fromARGB(255, 132, 156, 46),
                 name: 'A Tourist Spot Manager',
                 image: 'admin.json',
                 description: 'The person who takes care of all the details related to a tourist attraction, such as making sure it is clean, safe, and advertised so that visitors will come and enjoy it.',
