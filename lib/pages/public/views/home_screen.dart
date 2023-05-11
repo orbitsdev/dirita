@@ -182,6 +182,10 @@ class _HomeScreenState extends State<HomeScreen> {
         // ),
         title: Text(
           'Dirita'.toUpperCase(),
+          style:TextStyle(
+            color: AppTheme.ORANGE,
+            fontWeight: FontWeight.bold,
+          )
 
           
         ),

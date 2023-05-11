@@ -36,7 +36,7 @@ class VisitorsProfileScreen extends StatelessWidget {
               children: [
                 Container(),
                 GestureDetector(
-                  onTap: ()=> Get.to(()=> FullScreenImage()),
+                  onTap: ()=> Get.to(()=> FullScreenImage(imageUrl: user?.profile_image ?? Asset.avatarDefault)),
                   child: Container(
                     height: 190,
                     width: 190,
