@@ -245,6 +245,8 @@ Future<void> searchTouristSpots(String query) async {
       update();
 
       Get.off(() => const AdminScreen());
+              Modal.showSuccesToast(context: context, message: 'Tourist Spot successfully created');
+
     } on FirebaseException catch (e) {
       handleCreateTouristError(context, e);
     } on PlatformException catch (e) {
@@ -352,6 +354,8 @@ Future<void> searchTouristSpots(String query) async {
       update();
 
       Get.off(() => const AdminScreen());
+                    Modal.showSuccesToast(context: context, message: 'Tourist Spot successfully updated');
+
     } on FirebaseException catch (e) {
       handleUpdateTouristError(context, e);
     } on PlatformException catch (e) {

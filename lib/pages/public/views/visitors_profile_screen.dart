@@ -77,7 +77,16 @@ class VisitorsProfileScreen extends StatelessWidget {
 
                  Text('${user?.first_name} ${user?.last_name}' , style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold )),
                  VSpace(10),
-                 Text('${user?.email}' , style: TextStyle(fontSize: 18)),
+                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                   children: [
+                     Text('Email ${user?.email}' , style: TextStyle(fontSize: 18)),
+                     VSpace(10),
+                     Text('Contact Number ${user?.contact_number}' , style: TextStyle(fontSize: 18)),
+                     VSpace(10),
+                     Text('Address ${user?.address}' , style: TextStyle(fontSize: 18)),
+                   ],
+                 ),
               ],
             ),
           ),

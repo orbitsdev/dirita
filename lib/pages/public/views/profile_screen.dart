@@ -178,6 +178,16 @@ void getImage(BuildContext context) async {
                       Divider(
                         color: Colors.grey.shade300,
                       ),
+                      ProfileCardWidget(
+                          icon: Icons.phone_outlined, text: '${controller.user.value.contact_number}'),
+                      Divider(
+                        color: Colors.grey.shade300,
+                      ),
+                      ProfileCardWidget(
+                          icon: Icons.location_pin, text: '${controller.user.value.address}'),
+                      Divider(
+                        color: Colors.grey.shade300,
+                      ),
                     ],
                   );
                 }

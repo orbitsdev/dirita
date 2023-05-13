@@ -22,6 +22,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final authcontroller = Get.find<AuthController>();
   late TextEditingController firstNameController;
   late TextEditingController lastNameController ;
+  late TextEditingController _contactNumberController ;
+  late TextEditingController _addressController ;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
 
@@ -30,12 +32,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
       if(authcontroller.user.value.uid != null){
 
-            firstNameController = TextEditingController(text: authcontroller.user.value.first_name);
+firstNameController = TextEditingController(text: authcontroller.user.value.first_name);
 lastNameController = TextEditingController(text: authcontroller.user.value.last_name);
+_contactNumberController = TextEditingController(text: authcontroller.user.value.contact_number);
+_addressController = TextEditingController(text: authcontroller.user.value.address);
 
       }else{
-    firstNameController = TextEditingController();
+  firstNameController = TextEditingController();
 lastNameController = TextEditingController();
+_contactNumberController =TextEditingController();
+_addressController =TextEditingController();
 
       }
     super.initState();
@@ -45,13 +51,16 @@ lastNameController = TextEditingController();
   void dispose() {
     firstNameController.dispose();
     lastNameController.dispose();
+    _contactNumberController.dispose();
+    _addressController.dispose();
+
     super.dispose();
   }
 
   void updateUserDetails(BuildContext context) {
     if (formKey.currentState!.validate()) {
 
-        profilecontroller.updateUserDetails(context: context, firstName: firstNameController.text.trim(), lastName: lastNameController.text.trim());
+        profilecontroller.updateUserDetails(context: context, firstName: firstNameController.text.trim(), lastName: lastNameController.text.trim(), contact_number: _contactNumberController.text.trim(), address: _addressController.text.trim());
     
     }
   }
@@ -60,62 +69,94 @@ lastNameController = TextEditingController();
   Widget build(BuildContext context) {
      return Scaffold(
       appBar: AppBar(
-        title: Text('Update Profile'),
+        title: const Text('Update Profile'),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 20.0),
-              Text(
-                'User Details',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                controller: firstNameController,
-                decoration: InputDecoration(
-                  labelText: 'First Name',
-                  border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const  EdgeInsets.symmetric(horizontal: 20.0),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 20.0),
+                const Text(
+                  'User Details',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                controller: lastNameController,
-                decoration: InputDecoration(
-                  labelText: 'Last Name',
-                  border: OutlineInputBorder(),
+               const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: firstNameController,
+                  decoration:const  InputDecoration(
+                    labelText: 'First Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your first name';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your last name';
+               const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: lastNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Last Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your last name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: _contactNumberController,
+                  decoration: const InputDecoration(
+                    labelText: 'Contact Number',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter contact number';
+                    }
+                    return null;
+                  },  
+                ),
+                
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: _addressController,
+                  decoration: const InputDecoration(
+                    labelText: 'Adrress',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your address';
+                    }
+                    return null;
+                  },
+                ),
+                
+                const SizedBox(height: 20.0),
+                GetBuilder<ProfileController>(
+                  builder: (controller) {
+                    return ElevatedButton(
+                      onPressed: ()=> controller.isUpdating.value ? null: updateUserDetails(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.ORANGE,
+                        foregroundColor: Colors.white, // Set the button color to your custom color
+                      ),
+                      child:controller.isUpdating.value ? Center(child: LoaderWidget(color: Colors.white,)) :  const Text('Update'),
+                    );
                   }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20.0),
-              GetBuilder<ProfileController>(
-                builder: (controller) {
-                  return ElevatedButton(
-                    onPressed: ()=> controller.isUpdating.value ? null: updateUserDetails(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.ORANGE,
-                      foregroundColor: Colors.white, // Set the button color to your custom color
-                    ),
-                    child:controller.isUpdating.value ? Center(child: LoaderWidget(color: Colors.white,)) :  Text('Update'),
-                  );
-                }
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

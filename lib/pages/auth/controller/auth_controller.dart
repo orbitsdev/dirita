@@ -15,6 +15,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 
+import 'package:dirita_tourist_spot_app/utils/asset.dart';
+
+
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
 
@@ -44,6 +47,8 @@ class AuthController extends GetxController {
     required String password,
     required String first_name,
     required String last_name,
+    required String contact_number,
+    required String address,
     required String role,
   }) async {
     try {
@@ -58,7 +63,10 @@ class AuthController extends GetxController {
       email: userCredential.user!.email,
       first_name: first_name ,
       last_name: last_name ,
+      contact_number: contact_number,
+      address: address,
       role: role,
+      profile_image: Asset.avatarDefault, 
     );
 
 

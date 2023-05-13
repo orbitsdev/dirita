@@ -38,9 +38,13 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final _contactNumberController = TextEditingController();
+  final _addressController = TextEditingController();
 //focus node
   final _firstNameFocusNode = FocusNode();
   final _lastNameFocusNode = FocusNode();
+  final _contactNumberFocusNode = FocusNode();
+  final _addresssFocusNode = FocusNode();
 
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
@@ -56,15 +60,22 @@ class _SignupScreenState extends State<SignupScreen> {
     _firstNameController.dispose();
     _lastNameController.dispose();
 
+    _contactNumberController.dispose();
+    _addressController.dispose();
+
     _emailController.dispose();
     _passwordController.dispose();
 
     _firstNameFocusNode.dispose();
     _lastNameFocusNode.dispose();
 
+    _contactNumberFocusNode.dispose();
+    _addresssFocusNode.dispose();
+
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     _focusScopeNode.dispose();
+
     super.dispose();
   }
 
@@ -74,7 +85,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
     // Validate the form
     if (_key.currentState!.validate())  {
-          authcontroller.registerWithEmailAndPassword(context: context, email: _emailController.text.trim(), password: _passwordController.text.trim(), first_name: _firstNameController.text.trim(), last_name: _lastNameController.text.trim(), role: widget.name ?? 'tourist');
+          authcontroller.registerWithEmailAndPassword(
+            context: context,
+             email: _emailController.text.trim(),
+              password: _passwordController.text.trim(), 
+              first_name: _firstNameController.text.trim(),
+               last_name: _lastNameController.text.trim(), role: widget.name ?? 'tourist',
+               contact_number: _contactNumberController.text.trim(),
+                address: _addressController.text.trim());
 
         // final isAgree =  await Get.to(()=> PrivacyAndPolicy());
 
@@ -165,6 +183,40 @@ class _SignupScreenState extends State<SignupScreen> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your last name';
+                    }
+                    return null;
+                  },
+                ),
+                const VSpace(10),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+                    border: OutlineInputBorder(),
+                    labelText: 'Contact Number',
+                  ),
+                  controller: _contactNumberController,
+                  focusNode: _contactNumberFocusNode,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your contact number';
+                    }
+                    return null;
+                  },
+                ),
+                const VSpace(10),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+                    border: OutlineInputBorder(),
+                    labelText: 'Address ',
+                  ),
+                  controller: _addressController,
+                  focusNode: _addresssFocusNode,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your address ';
                     }
                     return null;
                   },

@@ -106,64 +106,7 @@ void updateProfile({required BuildContext context, required File new_photo}) asy
 
 
 
-//   void updateProfile({required BuildContext context, required File new_photo}) async {
-//   try {
-
-
-//     isUploading(true);
-//     update();
-//     String uid = auth.currentUser!.uid;
-//     final String id = Uuid().v4();
-
-//     // Upload the new profile photo
-//     String downloadedUrl = await FileApi.uploadFile(
-//       context: Get.context!,
-//       folder: 'profiles/',
-//       file_id: uid,
-//       filename: path.basename(new_photo.path),
-//       file: new_photo,
-//     );
-
-//     // Delete the old profile photo if it exists and is available in Firebase Storage
-//    // Delete the old profile photo if it exists and is available in Firebase Storage
-// if (authcontroller.user.value.profile_image != null) {
-//   String oldPhotoUrl = authcontroller.user.value.profile_image!;
-//   String oldPhotoFilename = path.basename(oldPhotoUrl);
-
-//   // Create a reference to the old photo in Firebase Storage
-//   Reference oldPhotoRef = storage.ref('profiles/$uid/$oldPhotoFilename');
-
-//   // Delete the old photo if it exists
-//   try {
-//     await oldPhotoRef.delete();
-//     print('Old profile photo deleted successfully');
-//   } catch (e) {
-//     handleUpdateProfileError(context, e);
-//   }
-// }
-
-//     // Update the user's profile details in Firestore
-//     await FirebaseFirestore.instance.collection('users').doc(uid).update({'profile_image': downloadedUrl});
-
-//     await authcontroller.updateUser();
-//      isUploading(false);
-//     update();
-
-//     // Success! Do something with the updated profile details if needed
-//     print('Profile image updated successfully');
-//   }  on FirebaseException catch (e) {
-//       handleUpdateProfileError(context, e);
-//     } on PlatformException catch (e) {
-//       handleUpdateProfileError(context, e);
-//     } on SocketException catch (e) {
-//       handleUpdateProfileError(context, e);
-//     }catch (e){
-//       handleUpdateProfileError(context, e);
-//     }
-// }
-
-
-void updateUserDetails({required BuildContext context, required String firstName, required String lastName}) async {
+void updateUserDetails({required BuildContext context, required String firstName, required String lastName, required String contact_number, required  String address } ) async{
   try {
  isUpdating(true);
   update();
@@ -177,6 +120,8 @@ void updateUserDetails({required BuildContext context, required String firstName
         .update({
       'first_name': firstName,
       'last_name': lastName,
+      'contact_number': contact_number,
+      'address': address,
     });
 
     // Update the user details locally
